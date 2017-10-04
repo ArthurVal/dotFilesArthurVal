@@ -88,7 +88,12 @@ alias cm="catkin build"
 alias cmR="catkin build -DCMAKE_BUILD_TYPE=Release"
 alias cmD="catkin build -DCMAKE_BUILD_TYPE=Debug"
 
-# # Customs --------------------------------------------------------------
+# Customs --------------------------------------------------------------
+
+# No share history
+setopt no_share_history
+
+
 ###### MUST BE SET IN .ZSHENV AS IT IS RELATIVE TO THE PC INSTALLS
 
 # export PATH="/opt/emacs/bin:$PATH"

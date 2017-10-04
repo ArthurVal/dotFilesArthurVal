@@ -36,11 +36,14 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     html
      themes-megapack
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode)
-     (auto-completion :variables auto-completion-enable-help-tooltip t)
+     (auto-completion :variables
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-enable-snippets-in-popup t)
      python
      helm
      pdf-tools
@@ -53,7 +56,7 @@ values."
             shell-default-term-shell "/bin/zsh"
             shell-default-height 30
             shell-default-position 'bottom)
-     spell-checking
+     (spell-checking :variables spell-checking-enable-by-default nil)
      syntax-checking
      (version-control :variables
                       version-control-global-margin t)
@@ -268,8 +271,9 @@ values."
    ;; This variable can also be set to a property list for finer control:
 
    ;; (default nil)
-   dotspacemacs-line-numbers '(:relative nil
-                                         :disabled-for-modes dired-mode
+   dotspacemacs-line-numbers '(:relative t
+                                         :disabled-for-modes
+                                         dired-mode
                                          doc-view-mode
                                          markdown-mode
                                          org-mode
@@ -346,11 +350,13 @@ you should place your code here."
   ;; CMAKE ide configs
   (setq cmake-ide-make-command "")
 
-
   ;; ;; Clangformat
   ;; (add-hook 'c++-mode-hook 'clang-format-bindings)
   ;; (defun clang-format-bindings ()
   ;;   (define-key c++-mode-map [tab] 'clang-format-buffer))
+
+  ;; ROS launch file hooked with xml mode
+  (add-to-list 'auto-mode-alist '("\\.launch\\'" . xml-mode))
 
   ;; I don't want imenu-list to autoresize
   (setq imenu-list-auto-resize nil)
