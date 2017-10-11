@@ -68,8 +68,9 @@ values."
    dotspacemacs-additional-packages '(rtags
                                       cmake-ide
                                       auto-complete-clang
-                                      company-clang
-                                      irony)
+                                      company-rtags
+                                      irony
+                                      multiple-cursors)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -397,6 +398,11 @@ you should place your code here."
 
   (require 'rtags) ;; optional, must have rtags installed
   (cmake-ide-setup)
+
+  (require 'multiple-cursors)
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
