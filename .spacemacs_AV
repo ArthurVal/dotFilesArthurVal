@@ -325,6 +325,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq-default c-default-style "bsd"
                 c-basic-offset 2)
 
+  (defun my-c-custom-indent-setup ()
+    (c-set-offset 'innamespace [0]))
+  (add-hook 'c++-mode-hook 'my-c-custom-indent-setup)
+
   (setq rtags-path "/local/is225926/rtags/bin")
   )
 
@@ -373,16 +377,6 @@ you should place your code here."
                               (begin (point-marker))
                               )
                            (progn
-                                        ; If less then 5 characters are in the buffer, insert the class definition
-                             (if (< (- (point-max) (point-min)) 5 )
-                                 (progn
-                                   (insert "\nclass " (capitalize fName) "{\npublic:\n\nprivate:\n\n};\n")
-                                   (goto-char (point-min))
-                                   (next-line-nomark 3)
-                                   (setq begin (point-marker))
-                                   )
-                               )
-
                                         ;Insert the Header Guard
                              (goto-char (point-min))
                              (insert ifDef)
