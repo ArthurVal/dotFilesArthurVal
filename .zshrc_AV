@@ -112,3 +112,5 @@ setopt no_share_history
 
 # # My workspace within this PC
 # source /local/ros_local_ws/ROS/devel/setup.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
