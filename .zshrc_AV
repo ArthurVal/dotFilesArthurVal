@@ -1,4 +1,4 @@
-# If you come from bash you might have to change your $PATH.
+# If you come from bash you might have to change your $PATH
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
@@ -84,10 +84,15 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Catkin related aliases
 alias cm="catkin build"
 alias cmR="catkin build -DCMAKE_BUILD_TYPE=Release"
 alias cmD="catkin build -DCMAKE_BUILD_TYPE=Debug"
 
+# IRFU Desktop VM Windows
+alias win="rdesktop -d extra -u avalient -g 1920x1200 -D -a 24 -x l -r sound:remote -r disk:REMOTE=/home/avalient/Téléchargements dsmewin1.extra.cea.fr"
+
+      
 # Customs --------------------------------------------------------------
 
 # No share history
