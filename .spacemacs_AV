@@ -38,7 +38,7 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      html
-     themes-megapack
+     ;; themes-megapack
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode
@@ -148,9 +148,7 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(spacemacs-dark
-                         tangotango
-                         material
-                         leuven)
+                         zenbrun)
 
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -334,8 +332,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
     (c-set-offset 'innamespace [0]))
   (add-hook 'c++-mode-hook 'my-c-custom-indent-setup)
 
-
-
   (setq rtags-path "/opt/rtags/bin")
   )
 
@@ -407,6 +403,12 @@ you should place your code here."
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+
+  (require ob-shell)
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((shell . t)
+                                 (python . t)
+                                 (emacs-lisp . t)))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
