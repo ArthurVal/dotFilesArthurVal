@@ -1,0 +1,561 @@
+#+STARTUP: overview
+#+STARTUP: hideblocks
+
+* Utility Functions
+** std::edit-org-user-config
+
+#+BEGIN_SRC emacs-lisp
+  (defun std::edit-org-user-config ()
+    "Edit the org user config file, in the current window."
+    (interactive)
+    (find-file-existing (concat (getenv "SPACEMACSDIR") "/user-config.org")))
+
+  (spacemacs/set-leader-keys
+    "feo" #'std::edit-org-user-config)
+#+END_SRC
+
+** std::org-files
+
+#+BEGIN_SRC emacs-lisp
+  (defun std::org-files ()
+    (interactive)
+    (require 'helm)
+    (helm :prompt "Org File: "
+          :buffer "*helm org files*"
+          :sources (helm-build-sync-source "Org Files"
+                     :candidates (--map (cons (f-filename it) it) (f-files org-directory))
+                     :action #'find-file-existing
+                     :filtered-candidate-transformer #'helm-fuzzy-highlight-matches)))
+
+  (spacemacs/set-leader-keys
+    "aof" #'std::org-files)
+#+END_SRC
+
+** after!
+
+#+BEGIN_SRC emacs-lisp
+  (defmacro after! (feature &rest body)
+    "Run BODY after loading FEATURE.
+  Same as `with-eval-after-load', but there is no need to quote FEATURE."
+    (declare (debug (sexp body)) (indent 1))
+    `(with-eval-after-load ,(if (stringp feature) feature `(quote ,feature))
+       ,@body))
+#+END_SRC
+
+** keybind!
+
+#+BEGIN_SRC emacs-lisp
+  (defmacro keybind! (keymaps &rest keybinds)
+    (declare (indent 1))
+    (cl-assert (= 0 (% (length keybinds) 2)) "Uneven number of keybinds!")
+    (unless (listp keymaps)
+      (setq keymaps (list keymaps)))
+    (unless (listp keymaps)
+      (setq keymaps (list keymaps)))
+    (-let [bind-forms nil]
+      (while keybinds
+        (-let [(key func . rest) keybinds]
+          (-let [key (if (vectorp key) key `(kbd ,key))]
+            (dolist (keymap keymaps)
+              (push `(define-key ,keymap ,key ,func) bind-forms)))
+          (setq keybinds rest)))
+      `(progn ,@(nreverse bind-forms))))
+#+END_SRC
+
+** set-local!
+
+#+BEGIN_SRC emacs-lisp
+  (defmacro set-local! (&rest binds)
+    (cl-assert (cl-evenp (length binds)))
+    (-let [pairs nil]
+      (while binds
+        (push (cons (pop binds) (pop binds)) pairs))
+      `(progn
+         ,@(--map
+            `(setq-local ,(car it) ,(cdr it))
+            (nreverse pairs)))))
+#+END_SRC
+
+* Config tangle & compilation
+
+To save on startup time the config file is only loaded on boot. Tangling and compilation is
+instead run as part of ~kill-emacs-hook~, relieving the need to load all of org and tangle the
+config before emacs may be used.
+
+The function to tangle and recompile the config, running only if the org file was recently
+modified.
+#+BEGIN_SRC emacs-lisp
+  (autoload #'org-babel-tangle-file "ob-tangle")
+
+  (defun std::config-tangle-and-recompile ()
+    (interactive)
+    (let* ((byte-compile-warnings '(not unresolved free-vars))
+           (dir      *SPACEMACSDIR*)
+           (el-file  (concat dir "/user-config.el"))
+           (org-file (file-chase-links (concat dir "/user-config.org"))))
+      (when (or (called-interactively-p 'interactive)
+                (not (file-exists-p el-file))
+                (file-newer-than-file-p org-file el-file))
+        (condition-case e
+            (progn
+              (org-babel-tangle-file org-file el-file "emacs-lisp")
+              (byte-recompile-file el-file t 0 nil))
+          (error (shell-command (format "notify-send 'ERROR' '%s'" e)))))))
+#+END_SRC
+
+Advice to insert reload before spacemacs' layer syncing.
+#+BEGIN_SRC emacs-lisp
+  (defun std::layer-sync-config-tangle-advice (&rest _)
+    (std::config-tangle-and-recompile))
+#+END_SRC
+
+Insert retangle before both quitting emacs and reloading the config.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'kill-emacs-hook #'std::config-tangle-and-recompile)
+  (advice-add #'dotspacemacs/sync-configuration-layers :after #'std::layer-sync-config-tangle-advice)
+#+END_SRC
+
+* Layer configurations
+** Auto Completion
+*** Global Activation
+
+#+BEGIN_SRC emacs-lisp
+  (global-company-mode t)
+#+END_SRC
+
+*** Settings
+**** Company Settings
+
+#+BEGIN_SRC emacs-lisp
+  (after! company
+    (setq
+     company-abort-manual-when-too-short t
+     company-auto-complete               nil
+     company-async-timeout               10
+     company-dabbrev-code-ignore-case    nil
+     company-dabbrev-downcase            nil
+     company-dabbrev-ignore-case         nil
+     company-etags-ignore-case           nil
+     company-idle-delay                  10
+     company-minimum-prefix-length       2
+     company-require-match               nil
+     company-selection-wrap-around       t
+     company-show-numbers                t
+     company-tooltip-flip-when-above     nil))
+#+END_SRC
+
+**** Tooltip
+
+The tooltip will look vastly better if we set a minimum width and properly align annotations.
+#+BEGIN_SRC emacs-lisp
+  (after! company
+    (setq
+     company-tooltip-minimum-width              70
+     company-tooltip-align-annotations          t
+     company-tooltip-margin                     2))
+#+END_SRC
+
+*** Backend Priority
+
+The completions provided by combined backends should be sorted, so as to avoid
+interspersing semantic completion candidates with dumb code-dabbrevs
+#+BEGIN_SRC emacs-lisp
+  (after! company
+    (defconst std::company::backend-priorities
+      '((company-fish-shell   . 10)
+        (company-shell        . 11)
+        (company-shell-env    . 12)
+        (company-anaconda     . 10)
+        (company-capf         . 50)
+        (company-yasnippet    . 60)
+        (company-keywords     . 70)
+        (company-files        . 80)
+        (company-dabbrev-code . 90)
+        (company-dabbrev      . 100))
+      "Alist of backends' priorities.  Smaller number means higher priority.")
+
+    (defun std::company::priority-of-backend (backend)
+      "Will retrieve priority of BACKEND.
+  Defauts to 999 if BACKEND is nul or has no priority defined."
+      (let ((pr (cdr (assoc backend std::company::backend-priorities))))
+        (if (null pr) 999 pr)))
+
+    (defun std::company::priority-compare (c1 c2)
+      "Compares the priorities of C1 & C2."
+      (let* ((b1   (get-text-property 0 'company-backend c1))
+             (b2   (get-text-property 0 'company-backend c2))
+             (p1   (std::company::priority-of-backend b1))
+             (p2   (std::company::priority-of-backend b2))
+             (diff (- p1 p2)))
+        (< diff 0)))
+
+    (defun std::company::sort-by-backend-priority (candidates)
+      "Will sort completion CANDIDATES according to their priorities."
+      (sort (delete-dups candidates) #'std::company::priority-compare)))
+#+END_SRC
+
+The priority sorting is only used in major modes which use combined backends
+#+BEGIN_SRC emacs-lisp
+  (defun std::company::use-completions-priority-sorting ()
+    (setq-local company-transformers '(company-flx-transformer company-sort-by-occurrence std::company::sort-by-backend-priority)))
+
+  (--each '(rust-mode-hook fish-mode-hook python-mode-hook)
+    (add-hook it #'std::company::use-completions-priority-sorting))
+#+END_SRC
+
+*** Company Flx
+
+#+BEGIN_SRC emacs-lisp
+  (after! company
+    (company-flx-mode t)
+    (setq company-flx-limit 100))
+#+END_SRC
+
+*** Bindings
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-@") #'company-complete)
+#+END_SRC
+
+** Org
+*** Functions
+
+~org-switch-to-buffer-other-window~
+Org thinks it's a good idea to disable ~display-buffer-alist~ when displaying its buffers. I don't.
+I want my buffers' display behaviour to be handled by shackle. All of them. No exceptions.
+#+BEGIN_SRC emacs-lisp
+  (after! org
+    (defun org-switch-to-buffer-other-window (&rest args)
+      "Same as the original, but lacking the wrapping call to `org-no-popups'"
+      (apply 'switch-to-buffer-other-window args)))
+#+END_SRC
+
+~std::org::capture-std-target~
+#+BEGIN_SRC  emacs-lisp
+  (after! org
+    (defun std::org::capture-std-target ()
+      `(file+headline
+        ,(concat org-directory "Capture.org")
+        ,(if (s-equals? (system-name) "a-laptop")
+             "Ideen"
+           "Postfach"))))
+#+END_SRC
+
+~std::org::table-recalc~
+#+BEGIN_SRC emacs-lisp
+  (after! org
+    (defun std::org::table-recalc ()
+      "Reverse the prefix arg bevaviour of `org-table-recalculate', such that
+  by default the entire table is recalculated, while with a prefix arg recalculates
+  only the current cell."
+      (interactive)
+      (setq current-prefix-arg (not current-prefix-arg))
+      (call-interactively #'org-table-recalculate)))
+#+END_SRC
+
+~std::org::table-switch-left~
+~std::org::table-switch-right~
+#+BEGIN_SRC emacs-lisp
+  (after! org
+    (defun std::org::table-switch-right ()
+      "Switch content of current table cell with the cell to the right."
+      (interactive)
+      (when (org-at-table-p)
+        (std::org::table-switch (org-table-current-line) (1+ (org-table-current-column)))))
+
+    (defun std::org::table-switch-left ()
+      "Switch content of current table cell with the cell to the left."
+      (interactive)
+      (when (org-at-table-p)
+        (std::org::table-switch (org-table-current-line) (1- (org-table-current-column)))))
+
+    (defun std::org::table-switch (x2 y2)
+      (let* ((p  (point))
+             (x1 (org-table-current-line))
+             (y1 (org-table-current-column))
+             (t1 (org-table-get x1 y1))
+             (t2 (org-table-get x2 y2)))
+        (org-table-put x1 y1 t2)
+        (org-table-put x2 y2 t1 t)
+        (goto-char p))))
+#+END_SRC
+
+~std::org::plot-table~
+#+BEGIN_SRC emacs-lisp
+  (after! org
+    (defun std::org::plot-table ()
+      "Plot table at point and clear image cache.
+  The cache clearing will update tables visible as inline images."
+      (interactive)
+      (save-excursion
+        (org-plot/gnuplot)
+        (clear-image-cache))))
+#+END_SRC
+
+*** Settings
+**** Prerequisites
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default org-directory          "~/Documents/Org/"
+                org-default-notes-file (concat org-directory "Capture.org"))
+#+END_SRC
+
+**** Startup
+
+#+BEGIN_SRC emacs-lisp
+  (after! org
+    (setq org-startup-folded             t
+          org-startup-indented           t
+          org-startup-align-all-tables   t
+          org-startup-with-inline-images nil))
+#+END_SRC
+
+**** Additional modules
+
+#+BEGIN_SRC emacs-lisp
+  (after! org
+    (add-to-list 'org-modules 'org-habit)
+    (require 'org-habit))
+#+END_SRC
+
+**** Better looking TODO keywords
+
+#+BEGIN_SRC emacs-lisp
+  (after! org
+    (setq-default org-todo-keywords '((sequence "[TODO]" "|" "[DONE]"))))
+#+END_SRC
+
+**** `Special` behaviour.
+
+#+BEGIN_SRC emacs-lisp
+  (after! org
+    (setq
+     org-special-ctrl-k         t
+     org-special-ctrl-o         nil
+     org-special-ctrl-a/e       t
+     org-ctrl-k-protect-subtree nil))
+#+END_SRC
+
+**** Capture
+
+#+BEGIN_SRC emacs-lisp
+  (after! org
+    (setq
+     org-capture-templates
+     `(("t" "Idee/Todo" entry
+        ,(std::org::capture-std-target)
+        "** [TODO] %?\n %U"))))
+#+END_SRC
+
+**** Custom settings
+
+#+BEGIN_SRC emacs-lisp
+  (after! org
+    (setq
+     ;; ARTHUR Customs
+     org-checkbox-hierarchical-statistics    nil
+     org-export-backends                     '(ascii html icalendar latex md odt)
+     org-hierarchical-todo-statistics        nil))
+#+END_SRC
+
+*** Babel Languages
+
+#+BEGIN_SRC emacs-lisp
+  (defmacro std::org::use-babel-use-languages (&rest langs)
+    (-let [forms nil]
+      (dolist (lang langs)
+        (push
+         `(progn
+            (autoload ',(intern (concat "org-babel-execute:" lang)) ,(concat "ob-" lang))
+            (autoload ',(intern (concat "org-babel-expand-body:" lang)) ,(concat "ob-" lang)))
+         forms))
+      `(progn ,@forms)))
+
+  (after! org
+    (std::org::use-babel-use-languages "emacs-lisp" "sh" "python" "shell"))
+#+END_SRC
+
+** Projectile
+*** Functions
+
+~std::projectile::magit-status~
+#+BEGIN_SRC emacs-lisp
+  (defun std::projectile::magit-status (&optional arg)
+    "Use projectile with Helm for running `magit-status'
+
+    With a prefix ARG invalidates the cache first."
+       (interactive "P")
+       (if (projectile-project-p)
+           (projectile-maybe-invalidate-cache arg))
+       (let ((helm-ff-transformer-show-only-basename nil)
+             (helm-boring-file-regexp-list           nil))
+         (helm :prompt "Git status in project: "
+               :buffer "*helm projectile*"
+               :sources (helm-build-sync-source "Projectile Projects"
+                          :candidates projectile-known-projects
+                          :action #'magit-status
+                          :filtered-candidate-transformer 'helm-fuzzy-highlight-matches))))
+#+END_SRC
+
+*** Keybinds
+
+#+BEGIN_SRC emacs-lisp
+  (after! projectile
+    (spacemacs/set-leader-keys
+      "pg"  nil
+      "pt"  #'projectile-find-tag
+      "psa" #'helm-projectile-ag
+      "pgs" #'std::projectile::magit-status
+      "pC"  #'projectile-cleanup-known-projects))
+#+END_SRC
+
+*** Settings
+
+#+BEGIN_SRC emacs-lisp
+  (after! projectile
+    (setq projectile-switch-project-action #'projectile-dired))
+#+END_SRC
+
+* Single Package Configurations
+** Multiple Cursor
+*** Keybinds
+
+Define multi-cursor keybindings
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+#+END_SRC
+
+* Major-mode custom behaviours
+** Xml
+*** Hooks
+
+ Add .launch file hook to xml-mode (ROS)
+ #+BEGIN_SRC emacs-lisp
+   (add-to-list 'auto-mode-alist '("\\.launch\\'" . xml-mode))
+ #+END_SRC
+
+** Python
+*** Hooks
+
+ Add Sphinx doc mode
+ #+BEGIN_SRC emacs-lisp
+  (add-hook 'python-mode (lambda()
+                           (require sphinx-doc)
+                           (sphinx-doc-mode t)))
+ #+END_SRC
+
+* Misc. Settings
+** Global Keybinds
+
+Bind fixup whitespace
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-]") 'fixup-whitespace)
+#+END_SRC
+
+Create Header Guards with f12 --- This should be for c-c++ mode only ... FIXME
+#+BEGIN_SRC emacs-lisp
+  (global-set-key [f12]
+                  '(lambda ()
+                     (interactive)
+                     (if (buffer-file-name)
+                         (let*
+                             ((fName (upcase (file-name-nondirectory (file-name-sans-extension buffer-file-name))))
+                              (ifDef (concat "#ifndef " fName "_H" "\n#define " fName "_H" "\n"))
+                              (begin (point-marker))
+                              )
+                           (progn
+                                        ;Insert the Header Guard
+                             (goto-char (point-min))
+                             (insert ifDef)
+                             (goto-char (point-max))
+                             (insert "\n#endif" " //" fName "_H")
+                             (goto-char begin))
+                           )
+                                        ;else
+                       (message (concat "Buffer " (buffer-name) " must have a filename"))
+                       )
+                     )
+                  )
+#+END_SRC
+
+** Smooth Scrolling
+
+No more jumpy recenter
+#+BEGIN_SRC emacs-lisp
+(setq
+  scroll-conservatively           20
+  scroll-margin                   10
+  scroll-preserve-screen-position t)
+#+END_SRC
+
+** Minor modes
+*** On/Off Switches
+
+On
+#+BEGIN_SRC emacs-lisp
+  (global-subword-mode t)
+#+END_SRC
+
+Off
+#+BEGIN_SRC emacs-lisp
+  (global-hl-line-mode -1)
+  (blink-cursor-mode -1)
+#+END_SRC
+
+*** Prettify Symbols
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default
+   prettify-symbols-alist
+   `(("lambda" . "λ")
+     ("!="     . "≠")
+     ("=="     . "⩵")
+     ("<="     . "⇚")
+     ("=>"     . "⇛")
+     ("<-"     . "⬅")
+     ("->"     . "⮕")))
+  (add-hook 'prog-mode-hook #'prettify-symbols-mode)
+#+END_SRC
+
+** Single Settings
+
+I don't want imenu-list to autoresize
+#+BEGIN_SRC emacs-lisp
+  (setq imenu-list-auto-resize nil)
+#+END_SRC
+
+Simple newlines
+#+BEGIN_SRC emacs-lisp
+  (setq next-line-add-newlines t)
+#+END_SRC
+
+No more ugly line splitting
+#+BEGIN_SRC emacs-lisp
+  (setq-default truncate-lines t)
+#+END_SRC
+
+Don't load outdated files
+#+BEGIN_SRC emacs-lisp
+  (setq load-prefer-newer t)
+#+END_SRC
+
+1 tab = 4 spaces
+#+BEGIN_SRC emacs-lisp
+  (setq-default tab-width 4)
+#+END_SRC
+
+No more asking to following symlinks
+#+BEGIN_SRC emacs-lisp
+  (setq vc-follow-symlinks t)
+#+END_SRC
+
+Use firefox to open urls.
+#+BEGIN_SRC emacs-lisp
+  (setq browse-url-browser-function #'browse-url-firefox)
+#+END_SRC
+
+
+
+
