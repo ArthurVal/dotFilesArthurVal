@@ -8,7 +8,7 @@
   (defun std::edit-org-user-config ()
     "Edit the org user config file, in the current window."
     (interactive)
-    (find-file-existing (concat (getenv "SPACEMACSDIR") "/user-config.org")))
+    (find-file-existing (concat dotspacemacs-directory "/user-config.org")))
 
   (spacemacs/set-leader-keys
     "feo" #'std::edit-org-user-config)
@@ -90,7 +90,7 @@ modified.
   (defun std::config-tangle-and-recompile ()
     (interactive)
     (let* ((byte-compile-warnings '(not unresolved free-vars))
-           (dir      *SPACEMACSDIR*)
+           (dir      dotspacemacs-directory)
            (el-file  (concat dir "/user-config.el"))
            (org-file (file-chase-links (concat dir "/user-config.org"))))
       (when (or (called-interactively-p 'interactive)
@@ -136,7 +136,7 @@ Insert retangle before both quitting emacs and reloading the config.
      company-dabbrev-downcase            nil
      company-dabbrev-ignore-case         nil
      company-etags-ignore-case           nil
-     company-idle-delay                  10
+     company-idle-delay                  2
      company-minimum-prefix-length       2
      company-require-match               nil
      company-selection-wrap-around       t
