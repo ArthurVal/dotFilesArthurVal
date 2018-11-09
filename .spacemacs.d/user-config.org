@@ -76,45 +76,6 @@
             (nreverse pairs)))))
 #+END_SRC
 
-* Config tangle & compilation
-
-To save on startup time the config file is only loaded on boot. Tangling and compilation is
-instead run as part of ~kill-emacs-hook~, relieving the need to load all of org and tangle the
-config before emacs may be used.
-
-The function to tangle and recompile the config, running only if the org file was recently
-modified.
-#+BEGIN_SRC emacs-lisp
-  (autoload #'org-babel-tangle-file "ob-tangle")
-
-  (defun std::config-tangle-and-recompile ()
-    (interactive)
-    (let* ((byte-compile-warnings '(not unresolved free-vars))
-           (dir      dotspacemacs-directory)
-           (el-file  (concat dir "/user-config.el"))
-           (org-file (file-chase-links (concat dir "/user-config.org"))))
-      (when (or (called-interactively-p 'interactive)
-                (not (file-exists-p el-file))
-                (file-newer-than-file-p org-file el-file))
-        (condition-case e
-            (progn
-              (org-babel-tangle-file org-file el-file "emacs-lisp")
-              (byte-recompile-file el-file t 0 nil))
-          (error (shell-command (format "notify-send 'ERROR' '%s'" e)))))))
-#+END_SRC
-
-Advice to insert reload before spacemacs' layer syncing.
-#+BEGIN_SRC emacs-lisp
-  (defun std::layer-sync-config-tangle-advice (&rest _)
-    (std::config-tangle-and-recompile))
-#+END_SRC
-
-Insert retangle before both quitting emacs and reloading the config.
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'kill-emacs-hook #'std::config-tangle-and-recompile)
-  (advice-add #'dotspacemacs/sync-configuration-layers :after #'std::layer-sync-config-tangle-advice)
-#+END_SRC
-
 * Layer configurations
 ** Auto Completion
 *** Global Activation
@@ -136,7 +97,7 @@ Insert retangle before both quitting emacs and reloading the config.
      company-dabbrev-downcase            nil
      company-dabbrev-ignore-case         nil
      company-etags-ignore-case           nil
-     company-idle-delay                  2
+     company-idle-delay                  0.5
      company-minimum-prefix-length       2
      company-require-match               nil
      company-selection-wrap-around       t
@@ -214,7 +175,7 @@ The priority sorting is only used in major modes which use combined backends
 *** Bindings
 
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-@") #'company-complete)
+  (global-set-key (kbd "C-@") 'company-complete)
 #+END_SRC
 
 ** Org
@@ -361,18 +322,13 @@ I want my buffers' display behaviour to be handled by shackle. All of them. No e
 *** Babel Languages
 
 #+BEGIN_SRC emacs-lisp
-  (defmacro std::org::use-babel-use-languages (&rest langs)
-    (-let [forms nil]
-      (dolist (lang langs)
-        (push
-         `(progn
-            (autoload ',(intern (concat "org-babel-execute:" lang)) ,(concat "ob-" lang))
-            (autoload ',(intern (concat "org-babel-expand-body:" lang)) ,(concat "ob-" lang)))
-         forms))
-      `(progn ,@forms)))
-
-  (after! org
-    (std::org::use-babel-use-languages "emacs-lisp" "sh" "python" "shell"))
+(after! org
+   (require 'ob-shell)
+   (require 'ob-python)
+    (org-babel-do-load-languages 'org-babel-load-languages
+    '((shell . t)
+      (python . t)
+      (emacs-lisp . t))))
 #+END_SRC
 
 ** Projectile
@@ -422,9 +378,9 @@ I want my buffers' display behaviour to be handled by shackle. All of them. No e
 
 Define multi-cursor keybindings
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 #+END_SRC
 
 * Major-mode custom behaviours
@@ -439,7 +395,7 @@ Define multi-cursor keybindings
 ** Python
 *** Hooks
 
- Add Sphinx doc mode
+Add Sphinx doc mode
  #+BEGIN_SRC emacs-lisp
   (add-hook 'python-mode (lambda()
                            (require sphinx-doc)
@@ -510,12 +466,7 @@ Off
   (setq-default
    prettify-symbols-alist
    `(("lambda" . "λ")
-     ("!="     . "≠")
-     ("=="     . "⩵")
-     ("<="     . "⇚")
-     ("=>"     . "⇛")
-     ("<-"     . "⬅")
-     ("->"     . "⮕")))
+     ("!="     . "≠")))
   (add-hook 'prog-mode-hook #'prettify-symbols-mode)
 #+END_SRC
 
@@ -555,6 +506,7 @@ Use firefox to open urls.
 #+BEGIN_SRC emacs-lisp
   (setq browse-url-browser-function #'browse-url-firefox)
 #+END_SRC
+
 
 
 
