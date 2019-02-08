@@ -55,6 +55,7 @@ values."
      git
      github
      markdown
+     latex
      org
      (shell :variables
             shell-default-term-shell "/bin/zsh"
@@ -324,7 +325,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   ;; C++ style bsd
   (setq-default c-default-style "bsd"
-                c-basic-offset 4)
+                c-basic-offset 2)
 
   (defun my-c-custom-indent-setup ()
     (c-set-offset 'innamespace [0]))

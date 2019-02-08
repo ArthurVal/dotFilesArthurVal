@@ -266,9 +266,16 @@ I want my buffers' display behaviour to be handled by shackle. All of them. No e
 #+BEGIN_SRC emacs-lisp
   (after! org
     (setq org-startup-folded             t
-          org-startup-indented           t
+          org-startup-indented           nil
           org-startup-align-all-tables   t
           org-startup-with-inline-images nil))
+#+END_SRC
+
+**** Agenda
+
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files (list org-directory
+                             "~/Workspace/ECLAIR/reunion"))
 #+END_SRC
 
 **** Additional modules
@@ -325,10 +332,18 @@ I want my buffers' display behaviour to be handled by shackle. All of them. No e
 (after! org
    (require 'ob-shell)
    (require 'ob-python)
+
     (org-babel-do-load-languages 'org-babel-load-languages
     '((shell . t)
       (python . t)
+      (ditaa . t)
       (emacs-lisp . t))))
+#+END_SRC
+
+*** Ditaa path
+#+BEGIN_SRC emacs-lisp
+(after! org
+    (setq org-org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar"))
 #+END_SRC
 
 ** Projectile
@@ -456,7 +471,7 @@ On
 
 Off
 #+BEGIN_SRC emacs-lisp
-  (global-hl-line-mode -1)
+  ;; (global-hl-line-mode -1)
   (blink-cursor-mode -1)
 #+END_SRC
 
@@ -477,9 +492,9 @@ I don't want imenu-list to autoresize
   (setq imenu-list-auto-resize nil)
 #+END_SRC
 
-Simple newlines
+Simple newlines deactivate
 #+BEGIN_SRC emacs-lisp
-  (setq next-line-add-newlines t)
+  (setq next-line-add-newlines nil)
 #+END_SRC
 
 No more ugly line splitting
@@ -506,8 +521,4 @@ Use firefox to open urls.
 #+BEGIN_SRC emacs-lisp
   (setq browse-url-browser-function #'browse-url-firefox)
 #+END_SRC
-
-
-
-
 
