@@ -127,9 +127,9 @@ bindsym $mod+Shift+r restart
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 mode "(l)ock (s)leep (h)ybernate (r)eboot (p)oweroff (e)xit-i3" {
-        bindsym l exec i3lock -i ~/Pictures/Wallpapers/Montagne_Desktop_0.png; mode "default"
-        bindsym s exec i3lock -i ~/Pictures/Wallpapers/Montagne_Desktop_0.png && systemctl suspend; mode "default"
-        bindsym h exec i3lock -i ~/Pictures/Wallpapers/Montagne_Desktop_0.png && systemctl hibernate; mode "default"
+        bindsym l exec i3lock -i ~/Pictures/Wallpapers/*.png; mode "default"
+        bindsym s exec i3lock -i ~/Pictures/Wallpapers/*.png && systemctl suspend; mode "default"
+        bindsym h exec i3lock -i ~/Pictures/Wallpapers/*.png && systemctl hibernate; mode "default"
         bindsym p exec systemctl poweroff; mode "default"
         bindsym r exec systemctl reboot; mode "default"
         bindsym e exec --no-startup-id i3-msg exit; mode "default"
@@ -176,7 +176,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute s
 exec --no-startup-id setxkbmap us intl -option ctrl:swapcaps
 
 # Add lock screen CTRL-MOD-l
-bindsym Control+Mod1+l exec i3lock -i ~/Pictures/Wallpapers/Montagne_Desktop_0.png
+bindsym Control+Mod1+l exec i3lock -i ~/Pictures/Wallpapers/*.png
 
 # start network manager applet
 exec --no-startup-id nm-applet &
