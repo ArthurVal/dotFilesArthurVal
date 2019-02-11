@@ -89,33 +89,9 @@ alias cm="catkin build"
 alias cmR="catkin build -DCMAKE_BUILD_TYPE=Release"
 alias cmD="catkin build -DCMAKE_BUILD_TYPE=Debug"
 
-# IRFU Desktop VM Windows
-alias win="rdesktop -d extra -u avalient -g 1920x1200 -D -a 24 -x l -r sound:remote -r disk:REMOTE=/home/avalient/Téléchargements dsmewin1.extra.cea.fr"
-
-      
 # Customs --------------------------------------------------------------
 
 # No share history
 setopt no_share_history
-
-
-###### MUST BE SET IN .ZSHENV AS IT IS RELATIVE TO THE PC INSTALLS
-
-# export PATH="/opt/emacs/bin:$PATH"
-# export PATH="/usr/lib/llvm-3.4/bin:$PATH"
-# export PATH="/local/is225926/rtags/bin:$PATH"
-# export PATH="/home/av251492/Scripts/sh:/home/av251492/Scripts/python:$PATH"
-
-# export PYTHONPATH="/home/av251492/Scripts/sh:/home/av251492/Scripts/python:$PYTHONPATH"
-
-
-# # GStreamer lib path source
-# export GST_PLUGIN_PATH=/usr/local/lib/gstreamer-1.0/
-
-# # ROS source
-# source /opt/ros/indigo/setup.zsh
-
-# # My workspace within this PC
-# source /local/ros_local_ws/ROS/devel/setup.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
