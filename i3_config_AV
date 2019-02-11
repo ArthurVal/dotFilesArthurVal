@@ -185,7 +185,6 @@ exec --no-startup-id nm-applet &
 # USB/Disk stuffs 
 exec --no-startup-id udiskie -s &
 
-
 # ------ CUSTOM WORKSPACE SETUP
-# TODO -----
+exec --no-startup-id aurotrandr -c
 
