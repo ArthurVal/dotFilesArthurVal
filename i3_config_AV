@@ -196,10 +196,10 @@ exec --no-startup-id nm-applet &
 exec --no-startup-id udiskie -s &
 
 # ------ CUSTOM WORKSPACE SETUP
-exec --no-startup-id aurorandr -c
+exec --no-startup-id autorandr -c
 
 # ---------------------- BKG ----------------------
-exec --no-startup-id feh --bg-center ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg
+exec --no-startup-id feh --bg-center ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg 
 
 # ---------------------- i3Bar ----------------------
 # Start i3bar to display a workspace bar (plus the system information i3status
