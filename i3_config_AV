@@ -178,6 +178,9 @@ bindsym $mod+r mode "resize"
 
 
 # ---------------------- CUSTOM CHANGES ----------------------
+# ------ CUSTOM WORKSPACE SETUP
+exec --no-startup-id autorandr -c
+
 # Rebind Audio Keys for current laptop
 Bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% #increase sound volume
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5% #decrease sound volume
@@ -195,11 +198,9 @@ exec --no-startup-id nm-applet &
 # USB/Disk stuffs 
 exec --no-startup-id udiskie -s &
 
-# ------ CUSTOM WORKSPACE SETUP
-exec --no-startup-id autorandr -c
-
 # ---------------------- BKG ----------------------
-exec --no-startup-id feh --bg-center ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg 
+exec --no-startup-id "sleep 5s; feh --bg-center ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg"
+# exec --no-startup-id feh --bg-center ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg
 
 # ---------------------- i3Bar ----------------------
 # Start i3bar to display a workspace bar (plus the system information i3status
