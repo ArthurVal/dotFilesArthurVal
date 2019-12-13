@@ -199,7 +199,7 @@ exec --no-startup-id nm-applet &
 exec --no-startup-id udiskie -s &
 
 # ---------------------- BKG ----------------------
-exec --no-startup-id "sleep 5s; feh --bg-center ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg"
+ exec --no-startup-id "sleep 5s; feh --bg-center ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg"
 # exec --no-startup-id feh --bg-center ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg
 
 # ---------------------- i3Bar ----------------------
