@@ -199,12 +199,12 @@ exec --no-startup-id nm-applet &
 exec --no-startup-id udiskie -s &
 
 # ---------------------- BKG ----------------------
- exec --no-startup-id "sleep 5s; feh --bg-center ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg"
+exec --no-startup-id "sleep 5s; feh --bg-center ~/Pictures/Wallpapers/Montagne_1.jpg"
 # exec --no-startup-id feh --bg-center ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg
 
 # ---------------------- i3Bar ----------------------
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+        status_command i3status --config ~/dotFilesArthurVal/i3/i3status_AV
 }
