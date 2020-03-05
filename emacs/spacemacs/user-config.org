@@ -258,7 +258,7 @@ I want my buffers' display behaviour to be handled by shackle. All of them. No e
 
 #+BEGIN_SRC emacs-lisp
   (setq-default org-directory          "~/Documents/Org/"
-                org-default-notes-file (concat org-directory "Capture.org"))
+                org-default-notes-file (concat org-directory "Notes.org"))
 #+END_SRC
 
 **** Startup
@@ -274,8 +274,7 @@ I want my buffers' display behaviour to be handled by shackle. All of them. No e
 **** Agenda
 
 #+BEGIN_SRC emacs-lisp
-(setq org-agenda-files (list org-directory
-                             "~/Workspace/ECLAIR/reunion"))
+(setq org-agenda-files (list "~/Documents/Org/Agenda.org"))
 #+END_SRC
 
 **** Additional modules

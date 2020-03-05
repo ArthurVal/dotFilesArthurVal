@@ -176,7 +176,7 @@ The cache clearing will update tables visible as inline images."
       (clear-image-cache))))
 
 (setq-default org-directory          "~/Documents/Org/"
-              org-default-notes-file (concat org-directory "Capture.org"))
+              org-default-notes-file (concat org-directory "Notes.org"))
 
 (after! org
   (setq org-startup-folded             t
@@ -184,8 +184,7 @@ The cache clearing will update tables visible as inline images."
         org-startup-align-all-tables   t
         org-startup-with-inline-images nil))
 
-(setq org-agenda-files (list org-directory
-                             "~/Workspace/ECLAIR/reunion"))
+(setq org-agenda-files (list "~/Documents/Org/Agenda.org"))
 
 (after! org
   (add-to-list 'org-modules 'org-habit)
