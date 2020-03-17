@@ -59,7 +59,19 @@ disk "/" {
 }
 
 volume master {
-        format = "♪: %volume"
+        format = "♪-0: %volume"
+        format_muted = "♪: muted (%volume)"
+        device = "pulse:0"
+}
+
+volume master {
+        format = "♪-2: %volume"
+        format_muted = "♪: muted (%volume)"
+        device = "pulse:2"
+}
+
+volume master {
+        format = "♪-1: %volume"
         format_muted = "♪: muted (%volume)"
         device = "pulse:1"
 }
