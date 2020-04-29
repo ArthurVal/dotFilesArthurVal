@@ -274,15 +274,13 @@ I want my buffers' display behaviour to be handled by shackle. All of them. No e
 **** Agenda
 
 #+BEGIN_SRC emacs-lisp
-(setq org-agenda-files (list "~/Documents/Org/Agenda.org"))
+  (setq org-agenda-files (list "~/Documents/Org/Agenda.org"))
 #+END_SRC
 
 **** Additional modules
 
 #+BEGIN_SRC emacs-lisp
-  (after! org
-    (add-to-list 'org-modules 'org-habit)
-    (require 'org-habit))
+
 #+END_SRC
 
 **** Better looking TODO keywords

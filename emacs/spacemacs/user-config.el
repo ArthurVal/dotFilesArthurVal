@@ -186,9 +186,7 @@ The cache clearing will update tables visible as inline images."
 
 (setq org-agenda-files (list "~/Documents/Org/Agenda.org"))
 
-(after! org
-  (add-to-list 'org-modules 'org-habit)
-  (require 'org-habit))
+
 
 (after! org
   (setq-default org-todo-keywords '((sequence "[TODO]" "|" "[DONE]"))))

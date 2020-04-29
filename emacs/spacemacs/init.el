@@ -334,10 +334,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (setq rtags-path "/opt/rtags/bin")
 
-  (require 'ob-shell)
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((shell . t)
-                                 (emacs-lisp . t)))
+  ;; (require 'ob-shell)
+  ;; (org-babel-do-load-languages 'org-babel-load-languages
+  ;;                              '((shell . t)
+  ;;                                (emacs-lisp . t)))
 
   )
 
@@ -349,10 +349,9 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  (require 'org)
-  (org-babel-load-file (expand-file-name "user-config.org" dotspacemacs-directory))
+  (with-eval-after-load 'org
+    (org-babel-load-file (expand-file-name "user-config.org" dotspacemacs-directory)))
   )
-
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 
