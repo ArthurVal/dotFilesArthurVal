@@ -9,13 +9,49 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-# Basic definition
-# for_window [class="^.*"] border pixel 2
-# gaps inner 15
-# Gaps outer 15
 
-#Mod Key = Win
-set $mod Mod4
+#################### APPLICATIONS ####################
+
+# ------ CUSTOM WORKSPACE SETUP
+exec --no-startup-id autorandr -c
+
+# Rebind Audio Keys for current laptop
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% # increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5% # decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle       # mute sound
+
+# Rebinding Caps lock to CTRL
+exec --no-startup-id setxkbmap us intl -option ctrl:swapcaps
+
+# start network manager applet
+exec --no-startup-id nm-applet &
+
+# USB/Disk stuffs 
+exec --no-startup-id udiskie -s &
+
+# Redshift
+exec --no-startup-id redshift-gtk -l 48.697198:2.189637 -t 5700:3600 -g 0.8 -m vidmode -v
+
+# ---------------------- BKG ----------------------
+exec --no-startup-id feh --bg-scale ~/Pictures/Wallpaper/cool_2.jpg
+
+
+#################### APPEARANCES #####################
+
+# class                 border  bground text    indicator child_border
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+
+client.background       #F8F8F2
+
+# Basic definition
+for_window [class="^.*"] border pixel 0
+smart_borders on
+gaps inner 7
+# Gaps outer 15
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -31,6 +67,16 @@ font pango:DejaVu Sans Mono 12
 # clear in small sizes. However, its unicode glyph coverage is limited, the old
 # X core fonts rendering does not support right-to-left and this being a bitmap
 # font, it doesn’t scale on retina/hidpi displays.
+
+new_window pixel 3
+focus_follows_mouse on
+force_focus_wrapping on
+
+
+#################### KEYBINDS ########################
+
+#Mod Key = Win
+set $mod Mod4
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -132,12 +178,6 @@ bindsym $mod+Shift+r restart
 
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-
-
-# TODO
-# set $keyring_stop
-# TODO
-# set $keyring_restart
 set $i3_custom_lock $HOME/dotFilesArthurVal/i3/i3_script/i3lock_screen.sh && sleep 1
 
 mode "(l)ock (s)leep (h)ybernate (r)eboot (p)oweroff (e)xit-i3" {
@@ -179,41 +219,9 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-
-# ---------------------- CUSTOM CHANGES ----------------------
-# ------ CUSTOM WORKSPACE SETUP
-exec --no-startup-id autorandr -c
-
-# Rebind Audio Keys for current laptop
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% # increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5% # decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle       # mute sound
-
-# Rebinding Caps lock to CTRL
-exec --no-startup-id setxkbmap us intl -option ctrl:swapcaps
-
-# start network manager applet
-exec --no-startup-id nm-applet &
-
-# USB/Disk stuffs 
-exec --no-startup-id udiskie -s &
-
-# ---------------------- BKG ----------------------
-exec --no-startup-id "sleep 5s; feh --bg-center ~/Pictures/Wallpapers/Montagne_1.jpg"
-# exec --no-startup-id feh --bg-center ~/Pictures/Wallpapers/Montagne_Desktop_0.jpg ~/Pictures/Wallpapers/Espace_Desktop_Vertical_0.jpeg
-
-# ---------------------- i3Bar ----------------------
+#################### BAR ####################
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-
-# class                 border  bground text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-
-client.background       #F8F8F2
 
 bar {
   colors {
@@ -232,4 +240,3 @@ bar {
   position          bottom
   workspace_buttons yes
 }
-
