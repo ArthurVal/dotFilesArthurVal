@@ -14,6 +14,9 @@ URxvt.perl-ext-common: default,matcher
 URxvt.urlLauncher: firefox
 URxvt.matcher.button: 1
 
+URxvt.transparent: true
+URxvt.shading: 30
+
 ! Dracula Xresources palette
 *.foreground: #F8F8F2
 *.background: #282A36
