@@ -65,11 +65,6 @@ status.register("network",
     interface="enp39s0",
     format_up="{v4cidr}",)
 
-# Note: requires both netifaces and basiciw (for essid and quality)
-status.register("network",
-    interface="wlan0",
-    format_up="{essid} {quality:03.0f}%",)
-
 # Shows disk usage of /
 # Format:
 # 42/128G [86G]
@@ -78,21 +73,10 @@ status.register("disk",
     format="{used}/{total}G [{avail}G]",)
 
 # Shows pulseaudio default sink volume
-#
 # Note: requires libpulseaudio from PyPI
 status.register("pulseaudio",
-    format="♪: {volume}%",)
-
-# Shows mpd status
-# Format:
-# Cloud connected▶Reroute to Remain
-# status.register("mpd",
-#     format="{title}{status}{album}",
-#     status={
-#         "pause": "▷",
-#         "play": "▶",
-#         "stop": "◾",
-#     },)
+    format="♪: {volume}%",
+)
 
 status.run()
 
