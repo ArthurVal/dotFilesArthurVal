@@ -48,7 +48,7 @@ client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
 
 # Basic definition
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 2
 smart_borders on
 gaps inner 7
 # Gaps outer 15
