@@ -1,0 +1,515 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: Arthur Valiente
+#+EMAIL: valiente.arthur@gmail.com
+#+PROPERTY: :mkdirp yes
+#+STARTUP: overview
+
+* Startup Performance
+
+#+begin_src emacs-lisp
+
+  (let ((file-name-handler-alist nil))
+
+    ;; The default is 800 kilobytes.  Measured in bytes.
+    (setq gc-cons-threshold most-positive-fixnum)
+
+    (defun efs/display-startup-time ()
+      (message "Emacs loaded in %s with %d garbage collections."
+               (format "%.2f seconds"
+                       (float-time
+                        (time-subtract after-init-time before-init-time)))
+               gcs-done))
+
+    (add-hook 'emacs-startup-hook #'efs/display-startup-time)
+
+#+end_src
+
+* Customized variables
+
+#+begin_src emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (when (file-exists-p custom-file)
+    (load custom-file))
+#+end_src
+
+* Package System Setup
+** Proxy
+   
+   Because proxy may be a pain in the a**, set both *url-proxy-services* and
+   *url-http-proxy-basic-auth-storage* manually with the propxy informations in
+   order to acces package and stuff behind a proxy.
+
+#+begin_src emacs-lisp
+  ;; (setq url-proxy-services
+  ;;       '(("no_proxy" . "^\\(localhost\\|10.*\\)")
+  ;;         ("http" . "your.proxy.com.cn:80")
+  ;;         ("https" . "your.proxy.com.cn:80")))
+
+  ;; (setq url-http-proxy-basic-auth-storage
+  ;;       (list (list "your.proxy.com.cn:80"
+  ;;                   (cons "Input your LDAP UID !"
+  ;;                         (base64-encode-string "your-user-name:your-password"))))
+#+end_src
+
+** Packages
+
+   Emacs has a built in package manager but it doesn't make it easy to
+   automatically install packages on a new system the first time you pull down
+   your configuration. [[https://github.com/jwiegley/use-package][use-package]] is a really helpful package used in this
+   configuration to make it a lot easier to automate the installation and
+   configuration of everything else we use.
+
+#+begin_src emacs-lisp
+
+  ;; Initialize package sources
+  (require 'package)
+
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("org" . "https://orgmode.org/elpa/")
+                           ("elpa" . "https://elpa.gnu.org/packages/")))
+
+  (package-initialize)
+  (unless package-archive-contents
+    (package-refresh-contents))
+
+    ;; Initialize use-package on non-Linux platforms
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+
+#+end_src
+
+** Automatic Package Updates
+
+   The auto-package-update package helps us keep our Emacs packages up to date! It
+   will prompt you after a certain number of days either at startup or at a
+   specific time of day to remind you to update your packages.
+
+   You can also use =M-x auto-package-update-now= to update right now!
+
+#+begin_src emacs-lisp
+
+  (use-package auto-package-update
+    :custom
+    (auto-package-update-interval 7)
+    (auto-package-update-prompt-before-update t)
+    (auto-package-update-hide-results t)
+    :config
+    (auto-package-update-maybe)
+    (auto-package-update-at-time "09:00"))
+
+#+end_src
+
+* Keep Folders Clean
+
+We use the [[https://github.com/emacscollective/no-littering/blob/master/no-littering.el][no-littering]] package to keep folders where we edit files and the
+Emacs configuration folder clean! It knows about a wide variety of variables for
+built in Emacs features as well as those from community packages so it can be
+much easier than finding and setting these variables yourself.
+
+#+begin_src emacs-lisp
+
+  ;; NOTE: If you want to move everything out of the ~/.emacs.d folder
+  ;; reliably, set `user-emacs-directory` before loading no-littering!
+  ;(setq user-emacs-directory "~/.cache/emacs")
+
+  (use-package no-littering)
+
+  ;; no-littering doesn't set this by default so we must place
+  ;; auto save files in the same path as it uses for sessions
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+
+#+end_src
+
+* Basic UI Configuration
+
+This section configures basic UI settings that remove unneeded elements to make
+Emacs look a lot more minimal and modern. If you're just getting started in
+Emacs, the menu bar might be helpful so you can remove the =(menu-bar-mode -1)=
+line if you'd like to still see that.
+
+#+begin_src emacs-lisp
+
+  (setq inhibit-startup-message t)
+
+  (scroll-bar-mode -1)        ; Disable visible scrollbar
+  (tool-bar-mode -1)          ; Disable the toolbar
+  (tooltip-mode -1)           ; Disable tooltips
+  (set-fringe-mode 10)        ; Give some breathing room
+
+  (menu-bar-mode -1)            ; Disable the menu bar
+
+  (column-number-mode)
+
+  (show-paren-mode)
+
+  ;; Disable line numbers for some modes
+  (dolist (mode '(org-mode-hook
+                  term-mode-hook
+                  shell-mode-hook
+                  treemacs-mode-hook
+                  eshell-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+
+  (use-package smooth-scrolling
+    :config
+    (smooth-scrolling-mode 1))
+
+  (when (>= emacs-major-version 26)
+    (use-package display-line-numbers
+      :defer nil
+      :ensure nil
+      :config
+      (global-display-line-numbers-mode)))
+
+
+
+#+end_src
+
+* UI Configuration
+** Color Theme
+
+[[https://github.com/hlissner/emacs-doom-themes][doom-themes]] is a great set of themes with a lot of variety and support for many
+different Emacs modes. Taking a look at the [[https://github.com/hlissner/emacs-doom-themes/tree/screenshots][screenshots]] might help you decide
+which one you like best. You can also run =M-x counsel-load-theme= to choose
+between them easily.
+
+#+begin_src emacs-lisp
+
+(use-package doom-themes
+  :init (load-theme 'doom-palenight t))
+
+#+end_src
+
+** Better Modeline
+
+[[https://github.com/seagle0128/doom-modeline][doom-modeline]] is a very attractive and rich (yet still minimal) mode line
+configuration for Emacs. The default configuration is quite good but you can
+check out the [[https://github.com/seagle0128/doom-modeline#customize][configuration options]] for more things you can enable or disable.
+
+*NOTE:* The first time you load your configuration on a new machine, you'll need to run `M-x all-the-icons-install-fonts` so that mode line icons display correctly.
+
+#+begin_src emacs-lisp
+
+  (use-package all-the-icons)
+
+  (use-package doom-modeline
+    :init (doom-modeline-mode 1))
+
+#+end_src
+
+** Which Key
+
+[[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key
+binding in Emacs to offer you all possible completions for the prefix. For
+example, if you press =C-c= (hold control and press the letter =c=), a panel
+will appear at the bottom of the frame displaying all of the bindings under that
+prefix and which command they run. This is very useful for learning the possible
+key bindings in the mode of your current buffer.
+
+#+begin_src emacs-lisp
+
+  (use-package which-key
+    :defer 0
+    :diminish which-key-mode
+    :config
+    (which-key-mode)
+    (setq which-key-idle-delay 1))
+
+#+end_src
+
+** Ivy and Counsel
+
+[[https://oremacs.com/swiper/][Ivy]] is an excellent completion framework for Emacs. It provides a minimal yet
+powerful selection menu that appears when you open files, switch buffers, and
+for many other tasks in Emacs. Counsel is a customized set of commands to
+replace `find-file` with `counsel-find-file`, etc which provide useful commands
+for each of the default completion commands.
+
+[[https://github.com/Yevgnen/ivy-rich][ivy-rich]] adds extra columns to a few of the Counsel commands to provide more
+information about each item.
+
+#+begin_src emacs-lisp
+
+  (use-package ivy
+    :diminish
+    :bind (("C-s" . swiper)
+           :map ivy-minibuffer-map
+           ("TAB" . ivy-alt-done)
+           ("C-f" . ivy-alt-done)
+           ("C-n" . ivy-next-line)
+           ("C-p" . ivy-previous-line)
+           :map ivy-switch-buffer-map
+           ("C-p" . ivy-previous-line)
+           ("C-f" . ivy-done)
+           ("C-d" . ivy-switch-buffer-kill)
+           :map ivy-reverse-i-search-map
+           ("C-p" . ivy-previous-line)
+           ("C-d" . ivy-reverse-i-search-kill))
+    :config
+    (ivy-mode 1))
+
+  (use-package ivy-rich
+    :after ivy
+    :init
+    (ivy-rich-mode 1))
+
+  (use-package counsel
+    :bind (("C-M-j" . 'counsel-switch-buffer)
+           :map minibuffer-local-map
+           ("C-r" . 'counsel-minibuffer-history))
+    :custom
+    (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+    :config
+    (counsel-mode 1))
+
+#+end_src
+
+*** Improved Candidate Sorting with prescient.el
+
+prescient.el provides some helpful behavior for sorting Ivy completion
+candidates based on how recently or frequently you select them. This can be
+especially helpful when using =M-x= to run commands that you don't have bound to
+a key but still need to access occasionally.
+
+#+begin_src emacs-lisp
+
+  (use-package ivy-prescient
+    :after counsel
+    :custom
+    (ivy-prescient-enable-filtering nil)
+    :config
+    ;; Uncomment the following line to have sorting remembered across sessions!
+    ;(prescient-persist-mode 1)
+    (ivy-prescient-mode 1))
+
+#+end_src
+
+** Helpful Help Commands
+
+[[https://github.com/Wilfred/helpful][Helpful]] adds a lot of very helpful (get it?) information to Emacs' =describe-=
+command buffers. For example, if you use =describe-function=, you will not only
+get the documentation about the function, you will also see the source code of
+the function and where it gets used in other places in the Emacs configuration.
+It is very useful for figuring out how things work in Emacs.
+
+#+begin_src emacs-lisp
+
+  (use-package helpful
+    :commands (helpful-callable helpful-variable helpful-command helpful-key)
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-function] . counsel-describe-function)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-variable] . counsel-describe-variable)
+    ([remap describe-key] . helpful-key))
+
+#+end_src
+
+* Org Mode
+TODO
+* Development
+** Languages
+*** IDE Features with lsp-mode
+**** lsp-mode
+
+We use the excellent [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]] to enable IDE-like functionality for many
+different programming languages via "language servers" that speak the [[https://microsoft.github.io/language-server-protocol/][Language
+Server Protocol]]. Before trying to set up =lsp-mode= for a particular language,
+check out the [[https://emacs-lsp.github.io/lsp-mode/page/languages/][documentation for your language]] so that you can learn which
+language servers are available and how to install them.
+
+The =lsp-keymap-prefix= setting enables you to define a prefix for where
+=lsp-mode='s default keybindings will be added. I *highly recommend* using the
+prefix to find out what you can do with =lsp-mode= in a buffer.
+
+The =which-key= integration adds helpful descriptions of the various keys so you
+should be able to learn a lot just by pressing =C-c l= in a =lsp-mode= buffer
+and trying different things that you find there.
+
+#+begin_src emacs-lisp
+
+  (defun efs/lsp-mode-setup ()
+    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+    (lsp-headerline-breadcrumb-mode))
+
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :hook (lsp-mode . efs/lsp-mode-setup)
+    :init
+    (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+    :config
+    (lsp-enable-which-key-integration t))
+
+#+end_src
+
+**** lsp-ui
+
+[[https://emacs-lsp.github.io/lsp-ui/][lsp-ui]] is a set of UI enhancements built on top of =lsp-mode= which make Emacs
+feel even more like an IDE. Check out the screenshots on the =lsp-ui= homepage
+(linked at the beginning of this paragraph) to see examples of what it can do.
+
+#+begin_src emacs-lisp
+
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui-mode)
+    :custom
+    (lsp-ui-doc-position 'bottom))
+
+#+end_src
+
+**** lsp-treemacs
+
+[[https://github.com/emacs-lsp/lsp-treemacs][lsp-treemacs]] provides nice tree views for different aspects of your code like
+symbols in a file, references of a symbol, or diagnostic messages (errors and
+warnings) that are found in your code.
+
+Try these commands with =M-x=:
+
+- =lsp-treemacs-symbols= - Show a tree view of the symbols in the current file
+- =lsp-treemacs-references= - Show a tree view for the references of the symbol
+  under the cursor
+- =lsp-treemacs-error-list= - Show a tree view for the diagnostic messages in
+  the project
+
+This package is built on the [[https://github.com/Alexander-Miller/treemacs][treemacs]] package which might be of some interest to
+you if you like to have a file browser at the left side of your screen in your
+editor.
+
+#+begin_src emacs-lisp
+
+  (use-package lsp-treemacs
+    :after lsp)
+
+#+end_src
+
+**** lsp-ivy
+
+[[https://github.com/emacs-lsp/lsp-ivy][lsp-ivy]] integrates Ivy with =lsp-mode= to make it easy to search for things by
+name in your code. When you run these commands, a prompt will appear in the
+minibuffer allowing you to type part of the name of a symbol in your code.
+Results will be populated in the minibuffer so that you can find what you're
+looking for and jump to that location in the code upon selecting the result.
+
+Try these commands with =M-x=:
+
+- =lsp-ivy-workspace-symbol= - Search for a symbol name in the current project
+  workspace
+- =lsp-ivy-global-workspace-symbol= - Search for a symbol name in all active
+  project workspaces
+
+#+begin_src emacs-lisp
+
+  (use-package lsp-ivy
+    :after lsp)
+
+#+end_src
+
+** Company Mode
+
+[[http://company-mode.github.io/][Company Mode]] provides a nicer in-buffer completion interface than
+=completion-at-point= which is more reminiscent of what you would expect from an
+IDE. We add a simple configuration to make the keybindings a little more useful
+(=TAB= now completes the selection and initiates completion at the current
+location if needed).
+
+We also use [[https://github.com/sebastiencs/company-box][company-box]] to further enhance the look of the completions with
+icons and better overall presentation.
+
+#+begin_src emacs-lisp
+
+  (use-package company
+    :after lsp-mode
+    :hook (lsp-mode . company-mode)
+    :bind (:map company-active-map
+           ("<tab>" . company-complete-selection))
+          (:map lsp-mode-map
+           ("<tab>" . company-indent-or-complete-common))
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.0))
+
+  (use-package company-box
+    :hook (company-mode . company-box-mode))
+
+#+end_src
+
+** Projectile
+
+[[https://projectile.mx/][Projectile]] is a project management library for Emacs which makes it a lot easier
+to navigate around code projects for various languages. Many packages integrate
+with Projectile so it's a good idea to have it installed even if you don't use
+its commands directly.
+
+#+begin_src emacs-lisp
+
+  (use-package projectile
+    :diminish projectile-mode
+    :custom ((projectile-completion-system 'ivy))
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :init
+    ;; NOTE: Set this to the folder where you keep your Git repos!
+    (when (file-directory-p "~/Workspace/")
+      (setq projectile-project-search-path '("~/Workspace")))
+    (setq projectile-switch-project-action #'projectile-dired)
+    ;; Which key naming 
+    (which-key-add-keymap-based-replacements global-map
+      "C-c p" '("projectile"))
+    :config 
+    (projectile-mode 1)
+    )
+
+  (use-package counsel-projectile
+    :after projectile
+    :config (counsel-projectile-mode))
+
+#+end_src
+
+** Magit
+
+[[https://magit.vc/][Magit]] is the best Git interface I've ever used. Common Git operations are easy
+to execute quickly using Magit's command panel system.
+
+#+begin_src emacs-lisp
+
+  (use-package magit
+    :commands magit-status
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+#+end_src
+
+** Rainbow Delimiters
+
+[[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]] is useful in programming modes because it colorizes nested
+parentheses and brackets according to their nesting depth. This makes it a lot
+easier to visually match parentheses in Emacs Lisp code without having to count
+them yourself.
+
+#+begin_src emacs-lisp
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+#+end_src
+
+* Runtime Performance
+
+Dial the GC threshold back down so that garbage collection happens more
+frequently but in less time.
+
+#+begin_src emacs-lisp
+
+    ;; Make gc pauses faster by decreasing the threshold.
+    (setq gc-cons-threshold (* 2 1000 1000))
+  )
+
+#+end_src
+
