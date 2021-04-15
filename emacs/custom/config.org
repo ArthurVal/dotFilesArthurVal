@@ -34,12 +34,18 @@
 
 * Package System Setup
 ** Proxy
-   
+
    Because proxy may be a pain in the a**, set both *url-proxy-services* and
    *url-http-proxy-basic-auth-storage* manually with the propxy informations in
-   order to acces package and stuff behind a proxy.
+   order to acces package and stuff behind a proxy. Because I don't want to leak
+   this infos within my dotFiles, you should put this infos inside a
+   proxy_config.el.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
+  (when (file-exists-p (expand-file-name "proxy_config.el" user-emacs-directory))
+    (load-file (expand-file-name "proxy_config.el" user-emacs-directory)))
+
+  ;; Put this inside proxy_config.el (with the correct infos obsviously):
   ;; (setq url-proxy-services
   ;;       '(("no_proxy" . "^\\(localhost\\|10.*\\)")
   ;;         ("http" . "your.proxy.com.cn:80")
@@ -49,6 +55,8 @@
   ;;       (list (list "your.proxy.com.cn:80"
   ;;                   (cons "Input your LDAP UID !"
   ;;                         (base64-encode-string "your-user-name:your-password"))))
+
+
 #+end_src
 
 ** Packages
@@ -459,10 +467,10 @@ its commands directly.
     (when (file-directory-p "~/Workspace/")
       (setq projectile-project-search-path '("~/Workspace")))
     (setq projectile-switch-project-action #'projectile-dired)
-    ;; Which key naming 
+    ;; Which key naming
     (which-key-add-keymap-based-replacements global-map
       "C-c p" '("projectile"))
-    :config 
+    :config
     (projectile-mode 1)
     )
 
@@ -512,4 +520,3 @@ frequently but in less time.
   )
 
 #+end_src
-
