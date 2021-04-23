@@ -3,7 +3,16 @@
 #+EMAIL: valiente.arthur@gmail.com
 #+PROPERTY: :mkdirp yes
 #+STARTUP: overview
-
+* TODO
+** Keybinds [0/1]
+*** TODO Add magit status keybinds
+** Fixes [0/2]
+*** TODO Fix counsel projectile files (ignore .svn/.git)
+*** TODO Fix Org mode config
+** Features [0/3]
+*** TODO Add buffer switch cursor stuff
+*** TODO C/C++ LSP mode stuff
+*** TODO Python LSP mode stuff
 * Startup Performance
 
 #+begin_src emacs-lisp
@@ -41,7 +50,7 @@
    this infos within my dotFiles, you should put this infos inside a
    proxy_config.el.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (when (file-exists-p (expand-file-name "proxy_config.el" user-emacs-directory))
     (load-file (expand-file-name "proxy_config.el" user-emacs-directory)))
 
@@ -72,15 +81,59 @@
   ;; Initialize package sources
   (require 'package)
 
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                           ("org" . "https://orgmode.org/elpa/")
-                           ("elpa" . "https://elpa.gnu.org/packages/")))
+  ;; Thoses functions are here to add local elpa directories to the package-archives
+  (defun arthval-list-dir-inside (dir-path)
+    "Return a list of all directories inside a given directory (filter out all
+   files stating with a '.')"
+    (seq-filter
+     'file-directory-p
+     (mapcar (lambda (x)
+               (expand-file-name x dir-path))
+             (directory-files dir-path nil "^[^\.]" t))))
+
+  (defun arthval-alist-all-dir-from (dir-list &optional key-prefix stop-first-dir)
+    (let (output-alist single-dir sub-dir-list)
+      (setq output-alist '())             ;Init with empty list
+      (while dir-list                     ;Iterate over all given dir
+        (setq single-dir (pop dir-list))
+        (message (concat "Looking for " single-dir "..."))
+        (if (not (file-directory-p single-dir)) (message "--> Directory doesn't exist")
+          (progn
+            (message "--> Directory exists")
+            (setq sub-dir-list (arthval-list-dir-inside single-dir))
+            (message
+             (concat
+              (number-to-string (length sub-dir-list))
+              " Subdirectories found inside"))
+            (while sub-dir-list
+              (push (cons
+                     (concat
+                      key-prefix
+                      (car (last (split-string (car sub-dir-list) "/" t))))
+                     (pop sub-dir-list))
+                    output-alist))
+            (when stop-first-dir
+              (setq dir-list nil)))))
+      (eval 'output-alist)))
+
+
+  (setq package-archives (append
+                          '(("melpa" . "https://melpa.org/packages/")
+                            ("org" . "https://orgmode.org/elpa/")
+                            ("elpa" . "https://elpa.gnu.org/packages/"))
+
+                          (arthval-alist-all-dir-from
+                           (list (expand-file-name "elpa_mirror" user-emacs-directory)
+                                 (expand-file-name "~/.elpa_mirror")
+                                 (expand-file-name "~/elpa_mirror"))
+                           "local_"
+                           t)))
 
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
 
-    ;; Initialize use-package on non-Linux platforms
+  ;; Initialize use-package on non-Linux platforms
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
 
