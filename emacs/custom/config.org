@@ -193,19 +193,35 @@ Emacs, the menu bar might be helpful so you can remove the =(menu-bar-mode -1)=
 line if you'd like to still see that.
 
 #+begin_src emacs-lisp
+  (setq-default
+   fill-column 80                                   ; Set width for automatic line breaks
+   indent-tabs-mode nil                             ; Prefers spaces over tabs
+   inhibit-startup-screen t                         ; Disable start-up screen
+   initial-scratch-message ""                       ; Empty the initial *scratch* buffer
+   kill-ring-max 128                                ; Maximum length of kill ring
+   load-prefer-newer t                              ; Prefers the newest version of a file
+   mark-ring-max 128                                ; Maximum length of mark ring
+   select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
+   tab-width 2                                      ; Set width for tabs
+   user-full-name "Arthur Valiente"                 ; Set the full name of the current user
+   user-mail-address "valiente.arthur@gmail.com"    ; Set the email address of the current user
+   vc-follow-symlinks t                             ; Always follow the symlinks
+   view-read-only t)                                ; Always open read-only buffers in view-mode
 
-  (setq inhibit-startup-message t)
+  (column-number-mode 1)                            ; Show the column number
+  (display-time-mode 1)                             ; Enable time in the mode-line
+  (set 'yes-or-no-p 'y-or-n-p)                      ; Replace yes/no prompts with y/n
+  (global-hl-line-mode)                             ; Hightlight current line
+  (set-default-coding-systems 'utf-8)               ; Default to utf-8 encoding
+  (show-paren-mode 1)                               ; Show the parent
 
   (scroll-bar-mode -1)        ; Disable visible scrollbar
   (tool-bar-mode -1)          ; Disable the toolbar
   (tooltip-mode -1)           ; Disable tooltips
   (set-fringe-mode 10)        ; Give some breathing room
+  (menu-bar-mode -1)          ; Disable the menu bar
 
-  (menu-bar-mode -1)            ; Disable the menu bar
 
-  (column-number-mode)
-
-  (show-paren-mode)
 
   ;; Disable line numbers for some modes
   (dolist (mode '(org-mode-hook
