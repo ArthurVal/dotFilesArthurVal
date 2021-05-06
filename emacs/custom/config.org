@@ -250,7 +250,7 @@ line if you'd like to still see that.
   Buffers can quickly become a mess. For some people, it's not a problem, but I
   like being able to find my way easily.
   
-  #+begin_src emacs-lisp :tangle yes
+  #+begin_src emacs-lisp
   (use-package ibuffer
     :bind ("C-x C-b" . ibuffer))
 
@@ -266,7 +266,7 @@ line if you'd like to still see that.
   
   Some buffers should not be deleted by accident:
   
-  #+begin_src emacs-lisp :tangle yes
+  #+begin_src emacs-lisp
   (defvar *protected-buffers* '("*scratch*" "*Messages*")
     "Buffers that cannot be killed.")
 
