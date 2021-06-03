@@ -84,11 +84,6 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Catkin related aliases
-alias cm="catkin build"
-alias cmR="catkin build -DCMAKE_BUILD_TYPE=Release"
-alias cmD="catkin build -DCMAKE_BUILD_TYPE=Debug"
-
 # Customs --------------------------------------------------------------
 
 # No share history
