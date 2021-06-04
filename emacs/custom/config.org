@@ -607,6 +607,22 @@ them yourself.
 
 #+end_src
 
+** Multiple cursor
+
+[[https://github.com/magnars/multiple-cursors.el][multiple-cursor]] is can be very powerfull when in needs to edit multiples lines
+at the same time.
+
+Bonus point: It always increase your swag level when people see 20 cursors
+editings things at the same time :+1:
+
+#+begin_src emacs-lisp
+
+(use-package multiple-cursors
+  :bind (("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)))
+
+#+end_src
+
 * Runtime Performance
 
 Dial the GC threshold back down so that garbage collection happens more
