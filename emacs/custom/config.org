@@ -4,8 +4,8 @@
 #+PROPERTY: :mkdirp yes
 #+STARTUP: overview
 * TODO
-** Keybinds [0/1]
-*** TODO Add magit status keybinds
+** Keybinds [1/1]
+*** DONE Add magit status keybinds
 ** Fixes [0/2]
 *** TODO Fix counsel projectile files (ignore .svn/.git)
 *** TODO Fix Org mode config
@@ -588,6 +588,7 @@ to execute quickly using Magit's command panel system.
 
   (use-package magit
     :commands magit-status
+    :bind (("M-g s" . magit-status))
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
