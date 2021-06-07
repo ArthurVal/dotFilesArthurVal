@@ -9,10 +9,11 @@
 ** Fixes [0/2]
 *** TODO Fix counsel projectile files (ignore .svn/.git)
 *** TODO Fix Org mode config
-** Features [0/3]
+** Features [2/4]
 *** TODO Add buffer switch cursor stuff
-*** TODO C/C++ LSP mode stuff
-*** TODO Python LSP mode stuff
+*** DONE C/C++ LSP mode stuff
+*** DONE Python LSP mode stuff
+*** TODO Smartparens
 * Startup Performance
 
 #+begin_src emacs-lisp
@@ -423,7 +424,7 @@ It is very useful for figuring out how things work in Emacs.
 TODO
 * Development
 ** Languages
-*** IDE Features with lsp-mode
+*** IDE - LSP
 **** lsp-mode
 
 We use the excellent [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]] to enable IDE-like functionality for many
@@ -623,6 +624,9 @@ editings things at the same time :+1:
          ("C-<" . mc/mark-previous-like-this)))
 
 #+end_src
+
+** TODO Smartparens
+[[https://github.com/Fuco1/smartparens][smartparens]]
 
 * Runtime Performance
 
