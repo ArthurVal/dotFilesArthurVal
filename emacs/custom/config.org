@@ -9,11 +9,12 @@
 ** Fixes [0/2]
 *** TODO Fix counsel projectile files (ignore .svn/.git)
 *** TODO Fix Org mode config
-** Features [2/4]
+** Features [2/5]
 *** TODO Add buffer switch cursor stuff
 *** DONE C/C++ LSP mode stuff
 *** DONE Python LSP mode stuff
 *** TODO Smartparens
+*** TODO Snippets
 * Startup Performance
 
 #+begin_src emacs-lisp
@@ -627,6 +628,8 @@ editings things at the same time :+1:
 
 ** TODO Smartparens
 [[https://github.com/Fuco1/smartparens][smartparens]]
+
+** TODO Snippets
 
 * Runtime Performance
 
