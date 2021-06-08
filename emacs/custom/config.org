@@ -243,6 +243,7 @@ line if you'd like to still see that.
       :defer nil
       :ensure nil
       :config
+      (setq display-line-numbers-type 'relative)
       (global-display-line-numbers-mode)))
 
 #+end_src
