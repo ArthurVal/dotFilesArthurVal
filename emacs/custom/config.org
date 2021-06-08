@@ -248,6 +248,16 @@ line if you'd like to still see that.
 #+end_src
 
 * UI Configuration
+** Windows
+
+[[https://github.com/abo-abo/ace-window][ace-windows]] can ease the management of windows (especially when there are more
+than 2 windows, `other-window` may start to become tidious...)
+
+  #+begin_src emacs-lisp
+  (use-package ace-window
+    :bind ("C-x o" . ace-window))
+  #+end_src
+
 ** Buffers
   Buffers can quickly become a mess. For some people, it's not a problem, but I
   like being able to find my way easily.
