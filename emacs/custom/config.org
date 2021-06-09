@@ -380,6 +380,7 @@ information about each item.
 
   (use-package counsel
     :bind (("C-M-j" . 'counsel-switch-buffer)
+           ("C-c i" . 'counsel-imenu)
            :map minibuffer-local-map
            ("C-r" . 'counsel-minibuffer-history))
     :custom
