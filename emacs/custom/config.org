@@ -462,7 +462,8 @@ and trying different things that you find there.
 
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
-    :hook (lsp-mode . efs/lsp-mode-setup)
+    :hook ((lsp-mode . efs/lsp-mode-setup)
+           ((c-mode-common python-mode) . lsp-deferred))
     :init
     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
     :config
