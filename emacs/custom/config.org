@@ -9,12 +9,12 @@
 ** Fixes [0/2]
 *** TODO Fix counsel projectile files (ignore .svn/.git)
 *** TODO Fix Org mode config
-** Features [2/5]
+** Features [3/5]
 *** TODO Add buffer switch cursor stuff
 *** DONE C/C++ LSP mode stuff
 *** DONE Python LSP mode stuff
 *** TODO Smartparens
-*** TODO Snippets
+*** DONE Snippets
 * Startup Performance
 
 #+begin_src emacs-lisp
@@ -638,7 +638,44 @@ editings things at the same time :+1:
 ** TODO Smartparens
 [[https://github.com/Fuco1/smartparens][smartparens]]
 
-** TODO Snippets
+** YASnippets
+
+[[https://github.com/joaotavora/yasnippet][yasnippet]] is a template system for emacs and given you access to snippet creation and so on...
+
+#+begin_src emacs-lisp
+
+(use-package yasnippet
+  :init
+  (which-key-add-keymap-based-replacements yas-minor-mode-map "C-c y" '("yasnippet"))
+  :config
+  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
+  (yas-global-mode t))
+
+#+end_src
+
+
+*** Ivy
+
+The ivy yasnippet integration.
+
+#+begin_src emacs-lisp
+
+(use-package ivy-yasnippet
+  :bind
+  ("C-c y s" . ivy-yasnippet))
+
+#+end_src
+
+*** Snippets
+**** Default
+
+Use of some default snippet define in MELPA for yasnippet.
+
+#+begin_src emacs-lisp
+
+(use-package yasnippet-snippets)
+
+#+end_src
 
 * Runtime Performance
 
