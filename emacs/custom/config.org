@@ -301,7 +301,7 @@ between them easily.
 #+begin_src emacs-lisp
 
 (use-package doom-themes
-  :init (load-theme 'doom-palenight t))
+  :init (load-theme 'doom-dracula t))
 
 #+end_src
 
