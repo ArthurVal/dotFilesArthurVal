@@ -32,7 +32,7 @@ exec --no-startup-id udiskie -s &
 exec --no-startup-id redshift-gtk -l 48.697198:2.189637 -t 5700:3600 -g 0.8 -m vidmode -v
 
 # ---------------------- BKG ----------------------
-exec --no-startup-id feh --bg-fill ~/dotFilesArthurVal/i3/Wallpaper/all/1920x1080/cool.jpg --bg-fill ~/dotFilesArthurVal/i3/Wallpaper/all/1080x1920/space_dream.jpg --bg-fill ~/dotFilesArthurVal/i3/Wallpaper/all/2560x1440/pillars_of_creation.jpg
+exec --no-startup-id feh --bg-fill ~/dotFilesArthurVal/i3/Wallpaper/all/1920x1080/nebula_by_hubble.jpg --bg-fill ~/dotFilesArthurVal/i3/Wallpaper/all/1080x1920/space_dream.jpg --bg-fill ~/dotFilesArthurVal/i3/Wallpaper/all/2560x1440/carina_nebula.jpg
 
 #################### APPEARANCES #####################
 
