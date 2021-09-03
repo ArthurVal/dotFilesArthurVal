@@ -2,7 +2,7 @@
 
 # set the icon and a temporary location for the screenshot to be stored
 # icon="$HOME/images/lock-icon-light.png"
-tmpbg='/tmp/screen.png'
+tmpbg='/tmp/lock_screen.png'
 
 # take a screenshot
 scrot "$tmpbg"
