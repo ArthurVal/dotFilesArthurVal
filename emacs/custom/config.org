@@ -261,7 +261,7 @@ than 2 windows, `other-window` may start to become tidious...)
 ** Buffers
   Buffers can quickly become a mess. For some people, it's not a problem, but I
   like being able to find my way easily.
-  
+
   #+begin_src emacs-lisp
   (use-package ibuffer
     :bind ("C-x C-b" . ibuffer))
@@ -275,9 +275,9 @@ than 2 windows, `other-window` may start to become tidious...)
         (ibuffer-do-sort-by-alphabetic)))
     :hook (ibuffer . my/ibuffer-projectile))
   #+end_src
-  
+
   Some buffers should not be deleted by accident:
-  
+
   #+begin_src emacs-lisp
   (defvar *protected-buffers* '("*scratch*" "*Messages*")
     "Buffers that cannot be killed.")
@@ -522,8 +522,31 @@ It is very useful for figuring out how things work in Emacs.
 
 #+end_src
 
-* Org Mode
-TODO
+** Undo
+
+Emacs default behavior when considering undo may appears a bit strange. [[https://www.emacswiki.org/emacs/UndoTree][Undo
+Tree]] makes everything very smooth. A must have ...
+
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :init
+    (global-undo-tree-mode))
+#+end_src
+
+* TODO Org Mode
+  TODO
+#+begin_src emacs-lisp
+  (use-package org)
+#+end_src
+
+** Org Exports
+   TODO
+#+begin_src emacs-lisp
+  (use-package ox-jira :after org)
+  (use-package ox-gfm :after org)
+#+end_src
+
 * Development
 ** Languages
 *** IDE - LSP
@@ -674,12 +697,13 @@ its commands directly.
     (which-key-add-keymap-based-replacements global-map
       "C-c p" '("projectile"))
     :config
-    (projectile-mode 1)
-    )
+    (projectile-mode 1))
 
   (use-package counsel-projectile
     :after projectile
     :config (counsel-projectile-mode))
+
+
 
 #+end_src
 
