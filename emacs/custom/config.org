@@ -652,6 +652,14 @@ Try these commands with =M-x=:
     :after lsp)
 
 #+end_src
+*** Python
+
+Use [[https://github.com/JorisE/yapfify][yapfify]] in order to format python buffers.
+
+#+begin_src emacs-lisp
+  (use-package yapfify
+    :hook (python-mode . yapf-mode))
+#+end_src
 
 ** Company Mode
 
