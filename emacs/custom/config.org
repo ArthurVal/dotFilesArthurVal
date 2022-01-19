@@ -576,7 +576,6 @@ should be able to learn a lot just by pressing =C-c l= in a =lsp-mode= buffer
 and trying different things that you find there.
 
 #+begin_src emacs-lisp
-
   (defun efs/lsp-mode-setup ()
     (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
     (lsp-headerline-breadcrumb-mode))
