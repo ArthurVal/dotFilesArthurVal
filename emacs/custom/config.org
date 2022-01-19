@@ -534,6 +534,15 @@ Tree]] makes everything very smooth. A must have ...
     (global-undo-tree-mode))
 #+end_src
 
+** Whitespace mode
+
+#+begin_src emacs-lisp
+  (use-package whitespace
+    :hook (prog-mode-hook . whitespace-mode)
+    :init
+    (setq whitespace-style '(face trailing lines-tail empty)))
+#+end_src
+
 * TODO Org Mode
   TODO
 #+begin_src emacs-lisp
