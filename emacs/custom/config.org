@@ -538,7 +538,7 @@ Tree]] makes everything very smooth. A must have ...
 
 #+begin_src emacs-lisp
   (use-package whitespace
-    :hook (prog-mode-hook . whitespace-mode)
+    :hook prog-mode
     :init
     (setq whitespace-style '(face trailing lines-tail empty)))
 #+end_src
@@ -746,7 +746,7 @@ them yourself.
 #+begin_src emacs-lisp
 
 (use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
+  :hook prog-mode)
 
 #+end_src
 
