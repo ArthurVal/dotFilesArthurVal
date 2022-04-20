@@ -11,8 +11,8 @@
 
 #################### APPLICATIONS ####################
 
-# ------ CUSTOM WORKSPACE SETUP
-exec --no-startup-id autorandr -c
+# ------ CUSTOM WORKSPACE SETUP AND WALLPAPER
+exec --no-startup-id autorandr -c && ~/.fehbg
 
 # Rebind Audio Keys for current laptop
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% # increase sound volume
@@ -30,9 +30,6 @@ exec --no-startup-id udiskie -s &
 
 # Redshift
 exec --no-startup-id redshift-gtk -l 48.697198:2.189637 -t 5700:3600 -g 0.8 -m vidmode -v
-
-# ---------------------- BKG ----------------------
-exec --no-startup-id feh --bg-fill ~/dotFilesArthurVal/i3/Wallpaper/all/1920x1080/nebula_by_hubble.jpg --bg-fill ~/dotFilesArthurVal/i3/Wallpaper/all/1080x1920/space_dream.jpg --bg-fill ~/dotFilesArthurVal/i3/Wallpaper/all/2560x1440/carina_nebula.jpg
 
 #################### APPEARANCES #####################
 
