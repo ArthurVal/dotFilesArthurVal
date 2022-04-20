@@ -28,7 +28,7 @@ status.register("load")
 # If you don't have a desktop notification demon yet, take a look at dunst:
 #   http://www.knopwob.org/dunst/
 status.register("battery",
-    format="{status} | {consumption:.2f}W {percentage:.2f}% [{percentage_design:.2f}%] {remaining:%E%hh:%Mm}",
+    format="{status} | {consumption:.2f}W {percentage:.2f}% ({percentage_design:.2f}%) {remaining:%E%hh:%Mm}",
     alert=True,
     alert_percentage=5,
     status={
