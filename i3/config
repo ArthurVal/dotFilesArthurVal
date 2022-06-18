@@ -173,7 +173,7 @@ bindsym $mod+Shift+r restart
 
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-set $i3_custom_lock $HOME/dotFilesArthurVal/i3/i3_script/i3lock_screen.sh && sleep 1
+set $i3_custom_lock $HOME/dotFilesArthurVal/i3/scripts/i3lock_screen.sh && sleep 1
 
 mode "(l)ock (s)leep (h)ybernate (r)eboot (p)oweroff (e)xit-i3" {
         bindsym l exec --no-startup-id $i3_custom_lock, mode "default"
@@ -231,7 +231,7 @@ bar {
     binding_mode       #FF5555 #FF5555 #F8F8F2
   }
 
-  status_command    python3 ~/dotFilesArthurVal/i3/i3pystatus_conf.py
+  status_command    python3 ~/dotFilesArthurVal/i3/i3pystatus.py
   position          bottom
   workspace_buttons yes
 }
