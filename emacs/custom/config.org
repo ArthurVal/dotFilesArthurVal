@@ -193,6 +193,7 @@ Emacs, the menu bar might be helpful so you can remove the =(menu-bar-mode -1)=
 line if you'd like to still see that.
 
 #+begin_src emacs-lisp
+  (require 'iso-transl)                             ;This is require in order to use dead keys with wayland
   (setq-default
    fill-column 80                                   ; Set width for automatic line breaks
    indent-tabs-mode nil                             ; Prefers spaces over tabs
