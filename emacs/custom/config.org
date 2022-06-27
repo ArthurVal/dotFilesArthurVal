@@ -588,7 +588,7 @@ and trying different things that you find there.
     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
     :config
     (lsp-enable-which-key-integration t)
-    (lsp-enable-on-type-formatting nil))
+    (setq lsp-enable-on-type-formatting nil))
 
 #+end_src
 
