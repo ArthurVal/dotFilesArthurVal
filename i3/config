@@ -231,7 +231,7 @@ bar {
     binding_mode       #FF5555 #FF5555 #F8F8F2
   }
 
-  status_command    python3 ~/dotFilesArthurVal/i3/i3pystatus.py
+  status_command    python3 ~/dotFilesArthurVal/i3/i3status
   position          bottom
   workspace_buttons yes
 }
