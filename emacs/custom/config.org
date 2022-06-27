@@ -674,7 +674,6 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
 icons and better overall presentation.
 
 #+begin_src emacs-lisp
-
   (use-package company
     :after lsp-mode
     :hook (lsp-mode . company-mode)
@@ -686,8 +685,8 @@ icons and better overall presentation.
     (company-minimum-prefix-length 1)
     (company-idle-delay 0.0))
 
-  (use-package company-box
-    :hook (company-mode . company-box-mode))
+  ;; (use-package company-box
+  ;;   :hook (company-mode . company-box-mode))
 
 #+end_src
 
@@ -775,7 +774,6 @@ editings things at the same time :+1:
 [[https://github.com/joaotavora/yasnippet][yasnippet]] is a template system for emacs and given you access to snippet creation and so on...
 
 #+begin_src emacs-lisp
-
 (use-package yasnippet
   :init
   (which-key-add-keymap-based-replacements yas-minor-mode-map "C-c y" '("yasnippet"))
