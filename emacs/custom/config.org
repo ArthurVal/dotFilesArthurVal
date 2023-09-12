@@ -543,14 +543,85 @@ Tree]] makes everything very smooth. A must have ...
     (setq whitespace-style '(face trailing lines-tail empty)))
 #+end_src
 
-* TODO Org Mode
-  TODO
+* Org Mode
+** Custom functions
 #+begin_src emacs-lisp
-  (use-package org)
+  ;; (defun av/org-toto())
 #+end_src
+** Config
+#+begin_src emacs-lisp
+  (use-package org
+    :bind (("C-c c" . org-capture)
+           ("C-c a" . org-agenda))
+    :custom
+    ;; Some default directories/files
+    (org-directory "~/Org")
+    (org-default-notes-file (concat org-directory "/Refile.org"))
+    (org-agenda-files (list org-directory))
 
+    ;; TODO keywords
+    (org-todo-keywords
+     '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+       (sequence "WAITING(w@/!)" "INACTIVE(i)" "|" "CANCELLED(c@/!)" "MEETING")))
+
+    (org-todo-keyword-faces
+     '(("TODO" :foreground "red" :weight bold)
+       ("NEXT" :foreground "yellow" :weight bold)
+       ;; ("WIP" :foreground "yellow" :weight bold)
+       ("DONE" :foreground "forest green" :weight bold)
+       ("WAITING" :foreground "orange" :weight bold)
+       ("INACTIVE" :foreground "magenta" :weight bold)
+       ("CANCELLED" :foreground "forest green" :weight bold)
+       ("MEETING" :foreground "forest green" :weight bold)))
+
+    (org-treat-S-cursor-todo-selection-as-state-change nil)
+
+    (org-todo-state-tags-trigger
+     '(("CANCELLED" ("CANCELLED" . t))
+       ("WAITING" ("WAITING" . t))
+       ("INACTIVE" ("WAITING") ("INACTIVE" . t))
+       (done ("WAITING") ("INACTIVE"))
+       ("TODO" ("WAITING") ("CANCELLED") ("INACTIVE"))
+       ("NEXT" ("WAITING") ("CANCELLED") ("INACTIVE"))
+       ("DONE" ("WAITING") ("CANCELLED") ("INACTIVE"))))
+
+    ;; Clock
+    (org-clock-out-remove-zero-time-clocks t)
+
+    ;; Capture
+    ;; -- Templates
+    (org-capture-templates
+     '(("t" "TODO" entry (file org-default-notes-file)
+        "* TODO %? :REFILE:\n%U\n" :clock-in t :clock-resume t)
+       ("m" "Meeting" entry (file org-default-notes-file)
+        "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)))
+
+     ;; Refile
+     (org-refile-targets '((nil :maxlevel . 9)
+                           (org-agenda-files :maxlevel . 9)))
+
+     ;; -- Set the refile target selection
+     (org-refile-use-outline-path 'file)
+     (org-outline-path-complete-in-steps nil)
+     (org-refile-allow-creating-parent-nodes 'confirm)
+
+     ;; Agenda
+     ;; -- Settings
+     (org-agenda-inhibit-startup nil)
+     (org-agenda-sticky t)
+     ;; -- Custom commands
+     ;; Reminder on expected fmt:
+     ;; - single filter    = (key desc type match settings files)
+     ;; - multiple filters = (key desc (cmd1 cmd2 ...) general_settings)
+     (org-agenda-custom-commands
+      '(("x" . "Agenda and ...")
+        ("xa" "All" ((tags "PRIORITY=\"A\""
+                           ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                            (org-agenda-overriding-header "High-priority:")))
+                     (agenda "")
+                     (alltodo ""))))))
+#+end_src
 ** Org Exports
-   TODO
 #+begin_src emacs-lisp
   (use-package ox-jira :after org)
   (use-package ox-gfm :after org)
