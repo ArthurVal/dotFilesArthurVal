@@ -207,7 +207,9 @@ line if you'd like to still see that.
    user-full-name "Arthur Valiente"                 ; Set the full name of the current user
    user-mail-address "valiente.arthur@gmail.com"    ; Set the email address of the current user
    vc-follow-symlinks t                             ; Always follow the symlinks
-   view-read-only t)                                ; Always open read-only buffers in view-mode
+   view-read-only t                                 ; Always open read-only buffers in view-mode
+   ring-bell-function `ignore                       ; Disable the ring bell hell...
+   )
 
   (column-number-mode 1)                            ; Show the column number
   (display-time-mode 1)                             ; Enable time in the mode-line
@@ -531,7 +533,9 @@ Tree]] makes everything very smooth. A must have ...
   (use-package undo-tree
     :ensure t
     :init
-    (global-undo-tree-mode))
+    (global-undo-tree-mode)
+    :config
+    (setq undo-tree-auto-save-history nil))
 #+end_src
 
 ** Whitespace mode
