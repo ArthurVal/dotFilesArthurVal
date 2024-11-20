@@ -475,7 +475,7 @@ a key but still need to access occasionally.
 
 #+begin_src emacs-lisp
   (use-package ivy-prescient
-    :after counsel
+    :after (ivy counsel)
     :custom
     (ivy-prescient-enable-filtering nil)
     :config
@@ -823,17 +823,15 @@ at the same time.
     (yas-global-mode t))
 #+end_src
 
-
 *** Ivy
 
 The ivy yasnippet integration.
 
 #+begin_src emacs-lisp
-
-(use-package ivy-yasnippet
-  :bind
-  ("C-c y s" . ivy-yasnippet))
-
+  (use-package ivy-yasnippet
+    :after (ivy yasnippet)
+    :bind
+    ("C-c y s" . ivy-yasnippet))
 #+end_src
 
 *** Snippets
