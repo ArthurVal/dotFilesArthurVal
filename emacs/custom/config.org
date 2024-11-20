@@ -18,7 +18,6 @@
 * Startup Performance
 
 #+begin_src emacs-lisp
-
   (let ((file-name-handler-alist nil))
 
     ;; The default is 800 kilobytes.  Measured in bytes.
@@ -37,8 +36,11 @@
 
 * Customized variables
 
+Store all customized variable inside `custom.el` located wihtin the
+`user-emacs-directory`.
+
 #+begin_src emacs-lisp
-  (setq custom-file "~/.emacs.d/custom.el")
+  (setq custom-file (concat user-emacs-directory "custom.el"))
   (when (file-exists-p custom-file)
     (load custom-file))
 #+end_src
