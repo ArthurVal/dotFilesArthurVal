@@ -539,8 +539,8 @@ Tree]] makes everything very smooth. A must have ...
            ("C-c a" . org-agenda))
     :custom
     ;; Some default directories/files
-    (org-directory "~/Org")
-    (org-default-notes-file (concat org-directory "/Refile.org"))
+    (org-directory (file-name-concat (getenv "HOME") "Documents" "Org"))
+    (org-default-notes-file (file-name-concat org-directory "refile.org"))
     (org-agenda-files (list org-directory))
 
     ;; TODO keywords
