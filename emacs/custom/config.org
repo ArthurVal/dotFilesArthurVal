@@ -48,11 +48,11 @@ Store all customized variable inside *custom.el* located wihtin the
 * Package System Setup
 ** Proxy
 
-   Because proxy may be a pain in the a**, set both *url-proxy-services* and
-   *url-http-proxy-basic-auth-storage* manually with the propxy informations in
-   order to acces package and stuff behind a proxy. Because I don't want to leak
-   this infos within my dotFiles, you should put this infos inside a
-   proxy_config.el.
+Because proxy may be a pain in the a**, set both *url-proxy-services* and
+*url-http-proxy-basic-auth-storage* manually with the propxy informations in
+order to acces package and stuff behind a proxy. Because I don't want to leak
+this infos within my dotFiles, you should put this infos inside a
+proxy_config.el.
 
 #+begin_src emacs-lisp
   (when (file-exists-p (expand-file-name "proxy_config.el" user-emacs-directory))
@@ -74,14 +74,13 @@ Store all customized variable inside *custom.el* located wihtin the
 
 ** Packages
 
-   Emacs has a built in package manager but it doesn't make it easy to
-   automatically install packages on a new system the first time you pull down
-   your configuration. [[https://github.com/jwiegley/use-package][use-package]] is a really helpful package used in this
-   configuration to make it a lot easier to automate the installation and
-   configuration of everything else we use.
+Emacs has a built in package manager but it doesn't make it easy to
+automatically install packages on a new system the first time you pull down your
+configuration. [[https://github.com/jwiegley/use-package][use-package]] is a really helpful package used in this
+configuration to make it a lot easier to automate the installation and
+configuration of everything else we use.
 
 #+begin_src emacs-lisp
-
   ;; Initialize package sources
   (require 'package)
 
@@ -143,26 +142,23 @@ Store all customized variable inside *custom.el* located wihtin the
 
   (require 'use-package)
   (setq use-package-always-ensure t)
-
 #+end_src
 
 ** Automatic Package Updates
 
-   The auto-package-update package helps us keep our Emacs packages up to date! It
-   will prompt you after a certain number of days either at startup or at a
-   specific time of day to remind you to update your packages.
+The auto-package-update package helps us keep our Emacs packages up to date! It
+will prompt you after a certain number of days either at startup or at a
+specific time of day to remind you to update your packages.
 
-   You can also use =M-x auto-package-update-now= to update right now!
+You can also use =M-x auto-package-update-now= to update right now!
 
 #+begin_src emacs-lisp
-
   (use-package auto-package-update
     :custom
     (auto-package-update-interval 7)
     (auto-package-update-prompt-before-update t)
     :config
     (auto-package-update-maybe))
-
 #+end_src
 
 * Keep Folders Clean
@@ -173,17 +169,14 @@ built in Emacs features as well as those from community packages so it can be
 much easier than finding and setting these variables yourself.
 
 #+begin_src emacs-lisp
-
-  ;; NOTE: If you want to move everything out of the ~/.emacs.d folder
-  ;; reliably, set `user-emacs-directory` before loading no-littering!
-  ;(setq user-emacs-directory "~/.cache/emacs")
-
-  (use-package no-littering)
+  (use-package no-littering
+    :config
+    (no-littering-theme-backups))
 
   ;; no-littering doesn't set this by default so we must place
   ;; auto save files in the same path as it uses for sessions
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+  ;; (setq auto-save-file-name-transforms
+  ;;       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 #+end_src
 
@@ -226,8 +219,6 @@ line if you'd like to still see that.
   (set-fringe-mode 10)        ; Give some breathing room
   (menu-bar-mode -1)          ; Disable the menu bar
 
-
-
   ;; Disable line numbers for some modes
   (dolist (mode '(org-mode-hook
                   term-mode-hook
@@ -235,7 +226,6 @@ line if you'd like to still see that.
                   treemacs-mode-hook
                   eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
 
   (use-package smooth-scrolling
     :config
@@ -248,7 +238,6 @@ line if you'd like to still see that.
       :config
       (setq display-line-numbers-type 'relative)
       (global-display-line-numbers-mode)))
-
 #+end_src
 
 * UI Configuration
@@ -257,32 +246,33 @@ line if you'd like to still see that.
 [[https://github.com/abo-abo/ace-window][ace-windows]] can ease the management of windows (especially when there are more
 than 2 windows, `other-window` may start to become tidious...)
 
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package ace-window
     :bind ("C-x o" . ace-window))
-  #+end_src
+#+end_src
 
 ** Buffers
-  Buffers can quickly become a mess. For some people, it's not a problem, but I
-  like being able to find my way easily.
+Buffers can quickly become a mess. For some people, it's not a problem, but I
+like being able to find my way easily.
 
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package ibuffer
     :bind ("C-x C-b" . ibuffer))
 
   (use-package ibuffer-projectile
-    :after ibuffer
+    :after (ibuffer projectile)
     :preface
     (defun my/ibuffer-projectile ()
       (ibuffer-projectile-set-filter-groups)
       (unless (eq ibuffer-sorting-mode 'alphabetic)
         (ibuffer-do-sort-by-alphabetic)))
-    :hook (ibuffer . my/ibuffer-projectile))
-  #+end_src
+    :hook
+    (ibuffer . my/ibuffer-projectile))
+#+end_src
 
-  Some buffers should not be deleted by accident:
+Some buffers should not be deleted by accident:
 
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (defvar *protected-buffers* '("*scratch*" "*Messages*")
     "Buffers that cannot be killed.")
 
@@ -294,6 +284,7 @@ than 2 windows, `other-window` may start to become tidious...)
 
   (add-hook 'after-init-hook #'my/protected-buffers)
 #+end_src
+
 ** Color Theme
 
 [[https://github.com/hlissner/emacs-doom-themes][doom-themes]] is a great set of themes with a lot of variety and support for many
@@ -302,10 +293,8 @@ which one you like best. You can also run =M-x counsel-load-theme= to choose
 between them easily.
 
 #+begin_src emacs-lisp
-
 (use-package doom-themes
   :init (load-theme 'doom-dracula t))
-
 #+end_src
 
 ** Better Modeline
@@ -317,93 +306,92 @@ check out the [[https://github.com/seagle0128/doom-modeline#customize][configura
 *NOTE:* The first time you load your configuration on a new machine, you'll need to run `M-x all-the-icons-install-fonts` so that mode line icons display correctly.
 
 #+begin_src emacs-lisp
-
-  (use-package all-the-icons)
+  (use-package all-the-icons
+    :if (display-graphic-p))
 
   (use-package doom-modeline
     :init (doom-modeline-mode 1))
-
 #+end_src
 
 ** Treemacs
-   [[https://github.com/Alexander-Miller/treemacs][Treemacs]] is a fancy tree layout file explorer built for Emacs. it handles
-   project management, git integration, etc..
+[[https://github.com/Alexander-Miller/treemacs][Treemacs]] is a fancy tree layout file explorer built for Emacs. it handles
+project management, git integration, etc..
 
 #+begin_src emacs-lisp
-(use-package treemacs
-   :ensure t
-   :defer t
-   :init
-   (with-eval-after-load 'winum
-   (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-   (which-key-add-keymap-based-replacements global-map "C-c t" '("treemacs"))
-   :config
-   (progn
-    (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
-          treemacs-deferred-git-apply-delay      0.5
-          treemacs-directory-name-transformer    #'identity
-          treemacs-display-in-side-window        t
-          treemacs-eldoc-display                 t
-          treemacs-file-event-delay              5000
-          treemacs-file-extension-regex          treemacs-last-period-regex-value
-          treemacs-file-follow-delay             0.2
-          treemacs-file-name-transformer         #'identity
-          treemacs-follow-after-init             t
-          treemacs-expand-after-init             t
-          treemacs-git-command-pipe              ""
-          treemacs-goto-tag-strategy             'refetch-index
-          treemacs-indentation                   2
-          treemacs-indentation-string            " "
-          treemacs-is-never-other-window         nil
-          treemacs-max-git-entries               5000
-          treemacs-missing-project-action        'ask
-          treemacs-move-forward-on-expand        nil
-          treemacs-no-png-images                 nil
-          treemacs-no-delete-other-windows       t
-          treemacs-project-follow-cleanup        nil
-          treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-          treemacs-position                      'left
-          treemacs-read-string-input             'from-child-frame
-          treemacs-recenter-distance             0.1
-          treemacs-recenter-after-file-follow    nil
-          treemacs-recenter-after-tag-follow     nil
-          treemacs-recenter-after-project-jump   'always
-          treemacs-recenter-after-project-expand 'on-distance
-          treemacs-litter-directories            '("/node_modules" "/.venv" "/.cask")
-          treemacs-show-cursor                   nil
-          treemacs-show-hidden-files             t
-          treemacs-silent-filewatch              nil
-          treemacs-silent-refresh                nil
-          treemacs-sorting                       'alphabetic-asc
-          treemacs-space-between-root-nodes      t
-          treemacs-tag-follow-cleanup            t
-          treemacs-tag-follow-delay              1.5
-          treemacs-user-mode-line-format         nil
-          treemacs-user-header-line-format       nil
-          treemacs-width                         35
-          treemacs-workspace-switch-cleanup      nil)
+  (use-package treemacs
+    :ensure t
+    :defer t
+    :init
+    (with-eval-after-load 'winum
+      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+    (which-key-add-keymap-based-replacements global-map "C-c t" '("treemacs"))
+    :config
+    (progn
+      (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
+            treemacs-deferred-git-apply-delay      0.5
+            treemacs-directory-name-transformer    #'identity
+            treemacs-display-in-side-window        t
+            treemacs-eldoc-display                 t
+            treemacs-file-event-delay              5000
+            treemacs-file-extension-regex          treemacs-last-period-regex-value
+            treemacs-file-follow-delay             0.2
+            treemacs-file-name-transformer         #'identity
+            treemacs-follow-after-init             t
+            treemacs-expand-after-init             t
+            treemacs-git-command-pipe              ""
+            treemacs-goto-tag-strategy             'refetch-index
+            treemacs-indentation                   2
+            treemacs-indentation-string            " "
+            treemacs-is-never-other-window         nil
+            treemacs-max-git-entries               5000
+            treemacs-missing-project-action        'ask
+            treemacs-move-forward-on-expand        nil
+            treemacs-no-png-images                 nil
+            treemacs-no-delete-other-windows       t
+            treemacs-project-follow-cleanup        nil
+            treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+            treemacs-position                      'left
+            treemacs-read-string-input             'from-child-frame
+            treemacs-recenter-distance             0.1
+            treemacs-recenter-after-file-follow    nil
+            treemacs-recenter-after-tag-follow     nil
+            treemacs-recenter-after-project-jump   'always
+            treemacs-recenter-after-project-expand 'on-distance
+            treemacs-litter-directories            '("/node_modules" "/.venv" "/.cask")
+            treemacs-show-cursor                   nil
+            treemacs-show-hidden-files             t
+            treemacs-silent-filewatch              nil
+            treemacs-silent-refresh                nil
+            treemacs-sorting                       'alphabetic-asc
+            treemacs-space-between-root-nodes      t
+            treemacs-tag-follow-cleanup            t
+            treemacs-tag-follow-delay              1.5
+            treemacs-user-mode-line-format         nil
+            treemacs-user-header-line-format       nil
+            treemacs-width                         35
+            treemacs-workspace-switch-cleanup      nil)
 
-    ;; The default width and height of the icons is 22 pixels. If you are
-    ;; using a Hi-DPI display, uncomment this to double the icon size.
-    ;;(treemacs-resize-icons 44)
+      ;; The default width and height of the icons is 22 pixels. If you are
+      ;; using a Hi-DPI display, uncomment this to double the icon size.
+      ;;(treemacs-resize-icons 44)
 
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode 'always)
-    (pcase (cons (not (null (executable-find "git")))
-                 (not (null treemacs-python-executable)))
-      (`(t . t)
-       (treemacs-git-mode 'deferred))
-      (`(t . _)
-       (treemacs-git-mode 'simple))))
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-c t 1"   . treemacs-delete-other-windows)
-        ("C-c t t"   . treemacs)
-        ("C-c t B"   . treemacs-bookmark)
-        ("C-c t C-t" . treemacs-find-file)
-        ("C-c t M-t" . treemacs-find-tag)))
+      (treemacs-follow-mode t)
+      (treemacs-filewatch-mode t)
+      (treemacs-fringe-indicator-mode 'always)
+      (pcase (cons (not (null (executable-find "git")))
+                   (not (null treemacs-python-executable)))
+        (`(t . t)
+         (treemacs-git-mode 'deferred))
+        (`(t . _)
+         (treemacs-git-mode 'simple))))
+    :bind
+    (:map global-map
+          ("M-0"       . treemacs-select-window)
+          ("C-c t 1"   . treemacs-delete-other-windows)
+          ("C-c t t"   . treemacs)
+          ("C-c t B"   . treemacs-bookmark)
+          ("C-c t C-t" . treemacs-find-file)
+          ("C-c t M-t" . treemacs-find-tag)))
 
   (use-package treemacs-projectile
     :after (treemacs projectile)
@@ -412,7 +400,6 @@ check out the [[https://github.com/seagle0128/doom-modeline#customize][configura
   (use-package treemacs-magit
     :after (treemacs magit)
     :ensure t)
-
 #+end_src
 
 ** Which Key
@@ -425,14 +412,12 @@ prefix and which command they run. This is very useful for learning the possible
 key bindings in the mode of your current buffer.
 
 #+begin_src emacs-lisp
-
   (use-package which-key
     :defer 0
     :diminish which-key-mode
     :config
     (which-key-mode)
     (setq which-key-idle-delay 1))
-
 #+end_src
 
 ** Ivy and Counsel
@@ -447,7 +432,6 @@ for each of the default completion commands.
 information about each item.
 
 #+begin_src emacs-lisp
-
   (use-package ivy
     :diminish
     :bind (("C-s" . swiper)
@@ -480,7 +464,6 @@ information about each item.
     (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
     :config
     (counsel-mode 1))
-
 #+end_src
 
 *** Improved Candidate Sorting with prescient.el
@@ -491,7 +474,6 @@ especially helpful when using =M-x= to run commands that you don't have bound to
 a key but still need to access occasionally.
 
 #+begin_src emacs-lisp
-
   (use-package ivy-prescient
     :after counsel
     :custom
@@ -500,7 +482,6 @@ a key but still need to access occasionally.
     ;; Uncomment the following line to have sorting remembered across sessions!
     ;(prescient-persist-mode 1)
     (ivy-prescient-mode 1))
-
 #+end_src
 
 ** Helpful Help Commands
@@ -512,7 +493,6 @@ the function and where it gets used in other places in the Emacs configuration.
 It is very useful for figuring out how things work in Emacs.
 
 #+begin_src emacs-lisp
-
   (use-package helpful
     :commands (helpful-callable helpful-variable helpful-command helpful-key)
     :custom
@@ -523,7 +503,6 @@ It is very useful for figuring out how things work in Emacs.
     ([remap describe-command] . helpful-command)
     ([remap describe-variable] . counsel-describe-variable)
     ([remap describe-key] . helpful-key))
-
 #+end_src
 
 ** Undo
@@ -548,7 +527,6 @@ Tree]] makes everything very smooth. A must have ...
     :init
     (setq whitespace-style '(face trailing lines-tail empty)))
 #+end_src
-
 * Org Mode
 ** Custom functions
 #+begin_src emacs-lisp
@@ -666,7 +644,6 @@ and trying different things that you find there.
     :config
     (lsp-enable-which-key-integration t)
     (setq lsp-enable-on-type-formatting nil))
-
 #+end_src
 
 **** lsp-ui
@@ -676,12 +653,11 @@ feel even more like an IDE. Check out the screenshots on the =lsp-ui= homepage
 (linked at the beginning of this paragraph) to see examples of what it can do.
 
 #+begin_src emacs-lisp
-
   (use-package lsp-ui
+    :after lsp-mode
     :hook (lsp-mode . lsp-ui-mode)
     :custom
     (lsp-ui-doc-position 'bottom))
-
 #+end_src
 
 **** lsp-treemacs
@@ -690,8 +666,7 @@ feel even more like an IDE. Check out the screenshots on the =lsp-ui= homepage
 symbols in a file, references of a symbol, or diagnostic messages (errors and
 warnings) that are found in your code.
 
-Try these commands with =M-x=:
-
+Try these commands with =M-x=:  
 - =lsp-treemacs-symbols= - Show a tree view of the symbols in the current file
 - =lsp-treemacs-references= - Show a tree view for the references of the symbol
   under the cursor
@@ -703,10 +678,8 @@ you if you like to have a file browser at the left side of your screen in your
 editor.
 
 #+begin_src emacs-lisp
-
   (use-package lsp-treemacs
     :after lsp)
-
 #+end_src
 
 **** lsp-ivy
@@ -725,10 +698,8 @@ Try these commands with =M-x=:
   project workspaces
 
 #+begin_src emacs-lisp
-
   (use-package lsp-ivy
     :after lsp)
-
 #+end_src
 *** Python
 
@@ -764,7 +735,6 @@ icons and better overall presentation.
 
   ;; (use-package company-box
   ;;   :hook (company-mode . company-box-mode))
-
 #+end_src
 
 ** Projectile
@@ -775,7 +745,6 @@ with Projectile so it's a good idea to have it installed even if you don't use
 its commands directly.
 
 #+begin_src emacs-lisp
-
   (use-package projectile
     :diminish projectile-mode
     :custom ((projectile-completion-system 'ivy))
@@ -785,19 +754,19 @@ its commands directly.
     ;; NOTE: Set this to the folder where you keep your Git repos!
     (when (file-directory-p "~/Workspace/")
       (setq projectile-project-search-path '("~/Workspace")))
+
     (setq projectile-switch-project-action #'projectile-dired)
+
     ;; Which key naming
     (which-key-add-keymap-based-replacements global-map
       "C-c p" '("projectile"))
+
     :config
     (projectile-mode 1))
 
   (use-package counsel-projectile
-    :after projectile
+    :after (projectile counsel)
     :config (counsel-projectile-mode))
-
-
-
 #+end_src
 
 ** Magit
@@ -806,11 +775,9 @@ its commands directly.
 to execute quickly using Magit's command panel system.
 
 #+begin_src emacs-lisp
-
   (use-package magit
     :commands magit-status
     :bind (("C-x g" . magit-status)))
-
 #+end_src
 
 ** Rainbow Delimiters
@@ -821,10 +788,8 @@ easier to visually match parentheses in Emacs Lisp code without having to count
 them yourself.
 
 #+begin_src emacs-lisp
-
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
-
 #+end_src
 
 ** Multiple cursor
@@ -832,20 +797,14 @@ them yourself.
 [[https://github.com/magnars/multiple-cursors.el][multiple-cursor]] is can be very powerfull when in needs to edit multiples lines
 at the same time.
 
-Bonus point: It always increase your swag level when people see 20 cursors
-editings things at the same time :+1:
-
 #+begin_src emacs-lisp
-
 (use-package multiple-cursors
   :bind (("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)))
-
 #+end_src
 
 ** TODO Smartparens
 [[https://github.com/Fuco1/smartparens][smartparens]]
-
 ** YASnippets
 
 [[https://github.com/joaotavora/yasnippet][yasnippet]] is a template system for emacs and given you access to snippet creation and so on...
@@ -862,8 +821,6 @@ editings things at the same time :+1:
     ;; (add-to-list 'yas-snippet-dirs "/some/dir/path")
 
     (yas-global-mode t))
-
-
 #+end_src
 
 
@@ -912,5 +869,4 @@ frequently but in less time.
     ;; Make gc pauses faster by decreasing the threshold.
     (setq gc-cons-threshold (* 2 1000 1000))
   )
-
 #+end_src
