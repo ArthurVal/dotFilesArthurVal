@@ -36,11 +36,11 @@
 
 * Customized variables
 
-Store all customized variable inside `custom.el` located wihtin the
-`user-emacs-directory`.
+Store all customized variable inside *custom.el* located wihtin the
+*user-emacs-directory*.
 
 #+begin_src emacs-lisp
-  (setq custom-file (concat user-emacs-directory "custom.el"))
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
     (load custom-file))
 #+end_src
