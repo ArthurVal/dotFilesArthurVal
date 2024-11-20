@@ -811,9 +811,10 @@ at the same time.
 
 #+begin_src emacs-lisp
   (use-package yasnippet
-    :init
-    (which-key-add-keymap-based-replacements yas-minor-mode-map "C-c y" '("yasnippet"))
     :config
+    (which-key-add-keymap-based-replacements
+      yas-minor-mode-map "C-c y" '("yasnippet"))
+
     ;; yas-snippet-dirs should point to custom snippet dir location
     ;; NOTE: yas-snippet-dirs is taken into account when:
     ;;  - activating "yas-global-mode"
