@@ -849,18 +849,19 @@ editings things at the same time :+1:
 [[https://github.com/joaotavora/yasnippet][yasnippet]] is a template system for emacs and given you access to snippet creation and so on...
 
 #+begin_src emacs-lisp
-(use-package yasnippet
-  :init
-  (which-key-add-keymap-based-replacements yas-minor-mode-map "C-c y" '("yasnippet"))
-  :config
-  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
-  (yas-global-mode t))
+  (use-package yasnippet
+    :init
+    (which-key-add-keymap-based-replacements yas-minor-mode-map "C-c y" '("yasnippet"))
+    :config
+    ;; yas-snippet-dirs should point to custom snippet dir location
+    ;; NOTE: yas-snippet-dirs is taken into account when:
+    ;;  - activating "yas-global-mode"
+    ;;  - calling "yas-reload-all" interactively
+    ;; (add-to-list 'yas-snippet-dirs "/some/dir/path")
 
-(use-package yasnippet-snippets
-  :requires yasnippet)
+    (yas-global-mode t))
 
-(use-package gitignore-snippets
-  :requires yasnippet)
+
 #+end_src
 
 
@@ -882,9 +883,22 @@ The ivy yasnippet integration.
 Use of some default snippet define in MELPA for yasnippet.
 
 #+begin_src emacs-lisp
+(use-package yasnippet-snippets
+  :requires yasnippet)
+#+end_src
 
-(use-package yasnippet-snippets)
+**** Python
 
+#+begin_src emacs-lisp
+(use-package py-snippets
+  :requires yasnippet)
+#+end_src
+
+**** Gitignore
+
+#+begin_src emacs-lisp
+(use-package gitignore-snippets
+  :requires yasnippet)
 #+end_src
 
 * Runtime Performance
@@ -893,7 +907,6 @@ Dial the GC threshold back down so that garbage collection happens more
 frequently but in less time.
 
 #+begin_src emacs-lisp
-
     ;; Make gc pauses faster by decreasing the threshold.
     (setq gc-cons-threshold (* 2 1000 1000))
   )
