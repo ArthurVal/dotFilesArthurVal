@@ -39,9 +39,9 @@ background = "#282a36"
 bright_foreground = "#ffffff"
 foreground = "#f8f8f2"
 
-[colors.search.bar]
-background = "#282a36"
-foreground = "#f8f8f2"
+# [colors.search.bar]
+# background = "#282a36"
+# foreground = "#f8f8f2"
 
 [colors.search.focused_match]
 background = "#ffb86c"

@@ -1,4 +1,7 @@
-import = ["/home/avaliente/.config/alacritty/dracula.toml"]
+# Configuration for Alacritty, the GPU enhanced terminal emulator.
+# Comple documentation available at https://alacritty.org/config-alacritty.html
+
+import = ["~/.config/alacritty/themes/dracula.toml"]
 
 [colors]
 draw_bold_text_with_bright_colors = false
@@ -33,7 +36,7 @@ history = 10000
 [window]
 decorations = "full"
 dynamic_padding = true
-opacity = 0.8
+opacity = 0.9
 
 [window.padding]
 x = 0
