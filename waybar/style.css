@@ -1,0 +1,78 @@
+@import url("./colors/dracula.css");
+
+* {
+	  font-size: 15px;
+	  font-family: monospace;
+}
+
+window#waybar {
+    opacity: 0.9;
+    background: @background;
+    color: @purple;
+}
+
+#workspaces,
+#clock.1,
+#clock.2,
+#clock.3,
+#network,
+#pulseaudio,
+#memory,
+#cpu,
+#battery,
+#disk,
+#tray {
+	background: @background-darker;
+}
+
+#workspaces button {
+	padding: 0 2px;
+	color: @foreground;
+}
+#workspaces button.focused {
+  background-image: linear-gradient(0deg, @purple, @selection);
+	/* color: #268bd2; */
+}
+#workspaces button:hover {
+	box-shadow: inherit;
+	text-shadow: inherit;
+}
+#workspaces button:hover {
+	background: #1a1a1a;
+	border: #1a1a1a;
+	padding: 0 3px;
+}
+
+#network {
+  color: @green
+}
+
+#network.disconnected {
+  color: @red
+}
+
+#pulseaudio {
+	color: #268bd2;
+}
+#memory {
+	color: #2aa198;
+}
+#cpu {
+	color: #6c71c4;
+}
+#battery {
+	color: #859900;
+}
+#disk {
+	color: #b58900;
+}
+
+#clock,
+#network,
+#pulseaudio,
+#memory,
+#cpu,
+#battery,
+#disk {
+	padding: 0 10px;
+}
