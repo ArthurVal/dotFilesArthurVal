@@ -227,6 +227,13 @@ line if you'd like to still see that.
                   eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+  ;; For some reason, some time, the compilation buffer show ansi escape code...
+  (use-package ansi-color
+    :init
+    (defun my-apply-color-to-compilation ()
+      (ansi-color-apply-on-region compilation-filter-start (point)))
+    :hook (compilation-filter . my-apply-color-to-compilation))
+
   (use-package smooth-scrolling
     :config
     (smooth-scrolling-mode 1))
