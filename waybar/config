@@ -6,6 +6,7 @@
 
 	"modules-left": [
 		"sway/workspaces",
+		"sway/mode",
 	],
 	"modules-center": [
 		"clock#1",
@@ -23,7 +24,7 @@
 	],
 
 	"sway/workspaces": {
-		"disable-scroll": true,
+		"disable-scroll": false,
 		"format": "{name}"
 	},
 

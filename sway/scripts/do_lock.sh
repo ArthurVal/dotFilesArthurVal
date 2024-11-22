@@ -13,4 +13,4 @@ grim ${TMP_SCREENSHOT}
 ffmpeg -i ${TMP_SCREENSHOT} -filter_complex "gblur=sigma=50" ${BKG_IMG} -y
 rm ${TMP_SCREENSHOT}
 
-swaylock -f -i "${BKG_IMG}"
+swaylock -f -k -i "${BKG_IMG}"
