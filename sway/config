@@ -18,13 +18,17 @@ set $right l
 # Your preferred terminal emulator
 set $term alacritty
 
+# Any windows whith an app_id containg $floating_window_name will be floating
+set $floating_window_name "__floating"
+for_window [app_id=$floating_window_name] floating enable, border none, opacity 0.8
+
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 # set $menu dmenu_path | wmenu | xargs swaymsg exec --
 
 # Application launcher with fzf
-set $menu exec $term --class=launcher -e \
+set $menu exec $term --class=$floating_window_name -e \
     bash -c \
     ' \
     compgen -c \
@@ -33,8 +37,6 @@ set $menu exec $term --class=launcher -e \
     | fzf --layout=reverse \
     | xargs -r swaymsg -t command exec \
     '
-
-for_window [app_id="^launcher$"] floating enable, border none, opacity 0.8
 
 include /etc/sway/config-vars.d/*
 
