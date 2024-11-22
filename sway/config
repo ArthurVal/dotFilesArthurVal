@@ -40,6 +40,9 @@ set $menu exec $term --class=$floating_window_name -e \
 
 include /etc/sway/config-vars.d/*
 
+### Notifier
+exec mako
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -294,3 +297,4 @@ bar {
 # }
 
 include /etc/sway/config.d/*
+
