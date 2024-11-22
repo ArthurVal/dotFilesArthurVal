@@ -455,6 +455,7 @@ information about each item.
            ("C-p" . ivy-previous-line)
            ("C-d" . ivy-reverse-i-search-kill))
     :config
+    (setq ivy-read-action-format-function 'ivy-read-action-format-columns)
     (ivy-mode 1))
 
   (use-package ivy-rich
