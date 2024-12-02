@@ -51,7 +51,7 @@ ZSH_THEME="bira"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git emacs sudo)
+plugins=(git emacs sudo ssh ssh-agent)
 
 [ -f ${ZSH}/oh-my-zsh.sh ] && source ${ZSH}/oh-my-zsh.sh
 
@@ -96,4 +96,9 @@ else
     [ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
 fi
 
-[ $(which fzf) ] && alias searchenv="printenv | fzf" || echo "FZF not installed"
+if [ $(which fzf) ]; then
+    alias searchenv="printenv | fzf"
+    alias searchproc="ps -aux | fzf"
+else
+    echo "FZF not installed"
+fi
