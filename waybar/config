@@ -19,8 +19,8 @@
 		"cpu",
 		"battery",
 		"disk",
-		"network",    
-		"tray"
+		"network",
+		"tray",
 	],
 
 	"sway/workspaces": {
@@ -39,7 +39,7 @@
 	"clock#3": {
 		"format": "{:%d-%m}",
 		"tooltip": true,
-    "tooltip-format": "<tt><small>{calendar}</small></tt>", 
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode"          : "year",
       "mode-mon-col"  : 3,
@@ -68,7 +68,7 @@
     "format-ethernet": "{ifname}: {ipaddr}/{cidr}",
     "format-disconnected": "Disconnected"
   },
-    
+
 	"pulseaudio": {
 		"format": "{icon} {volume:2}%",
 		"format-bluetooth": "{icon}  {volume}%",
@@ -83,14 +83,17 @@
 		"scroll-step": 5,
 		"on-click": "pavucontrol",
 	},
+
 	"memory": {
 		"interval": 5,
 		"format": "Mem {}%"
 	},
+
 	"cpu": {
 		"interval": 5,
 		"format": "CPU {usage:2}%"
 	},
+
 	"battery": {
 		"states": {
 			"good": 95,
@@ -106,11 +109,13 @@
 			""
 		]
 	},
+
 	"disk": {
 		"interval": 5,
 		"format": "Disk {percentage_used:2}%",
 		"path": "/"
 	},
+
 	"tray": {
 		"icon-size": 20
 	}
