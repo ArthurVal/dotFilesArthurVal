@@ -75,6 +75,8 @@ fi
 # ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
+# Customs --------------------------------------------------------------
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -84,11 +86,13 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Customs --------------------------------------------------------------
+# Display an env list variable with newline instead of ':'
+alias pretty_env_list="sed -e 's@^\([^=]*\)=@\o033[33;1m\1\o033[0m\n@' -e 's@:@\n@g'"
 
 # No share history
 setopt no_share_history
 
+# fzf
 if [ -f ~/.fzf.zsh ]; then
     source ~/.fzf.zsh
 else
