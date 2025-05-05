@@ -94,10 +94,15 @@ setopt no_share_history
 
 # fzf
 if [ -f ~/.fzf.zsh ]; then
+    # Source install
     source ~/.fzf.zsh
 else
-    [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-    [ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
+    # Installed through pkg manager
+    for file in /usr/share/doc/fzf/examples/key-bindings.zsh \
+                /usr/share/doc/fzf/examples/completion.zsh
+    do
+       [ -f ${file} ] && source ${file}
+    done
 fi
 
 if [ $(which fzf) ]; then
