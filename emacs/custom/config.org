@@ -654,7 +654,15 @@ and trying different things that you find there.
     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
     :config
     (lsp-enable-which-key-integration t)
-    (setq lsp-enable-on-type-formatting nil))
+    (setq lsp-enable-on-type-formatting nil)
+    (setq lsp-clients-clangd-args '("-j=5"
+                                    "--malloc-trim"
+                                    "--fallback-style=Google"
+                                    "--header-insertion=never"
+                                    "--background-index"
+                                    "--background-index-priority=low"
+                                    "--clang-tidy"))
+    )
 #+end_src
 
 **** lsp-ui
@@ -741,8 +749,23 @@ icons and better overall presentation.
           (:map lsp-mode-map
            ("<tab>" . company-indent-or-complete-common))
     :custom
-    (company-minimum-prefix-length 1)
-    (company-idle-delay 0.0))
+     (company-minimum-prefix-length 2)
+     (company-idle-delay 0)
+
+     (company-tooltip-align-annotations t)
+     (company-tooltip-limit 10)
+
+     (company-echo-delay (if (display-graphic-p) nil 0))
+     (company-require-match 'never)
+     (company-show-numbers t)
+     (company-global-modes
+      '(not erc-mode
+            message-mode
+            help-mode
+            gud-mode
+            eshell-mode
+            shell-mode))
+     (company-backends '(company-capf)))
 
   (use-package company-box
     :hook (company-mode . company-box-mode))
