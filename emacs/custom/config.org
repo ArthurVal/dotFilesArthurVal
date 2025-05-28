@@ -304,7 +304,7 @@ configuration for Emacs. The default configuration is quite good but you can
 check out the [[https://github.com/seagle0128/doom-modeline#customize][configuration options]] for more things you can enable or disable.
 
 #+begin_src emacs-lisp
-  (use-package nerds-icons
+  (use-package nerd-icons
     :if (display-graphic-p))
 
   (use-package doom-modeline
