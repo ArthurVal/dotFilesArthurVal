@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Source fzf accodingly based on how it has been installed
+if [ -f ~/.fzf.zsh ]; then
+    # Installed manually
+    source ~/.fzf.zsh
+else
+    # Installed through the pkg manager
+    for file in /usr/share/doc/fzf/examples/key-bindings.zsh \
+                /usr/share/doc/fzf/examples/completion.zsh
+    do
+       [ -f ${file} ] && source ${file}
+    done
+fi

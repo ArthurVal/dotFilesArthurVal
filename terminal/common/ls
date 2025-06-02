@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ -n "$(which dircolors)" ]; then
+    alias ls='ls --color=auto'
+fi
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Add usefull alias to pipe with fzf
+if [ -n "$(which fzf)" ]; then
+    alias printenvf="printenv | fzf"
+    alias psf="ps -aux | fzf"
+fi

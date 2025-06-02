@@ -1,8 +1,5 @@
-# If you come from bash you might have to change your $PATH
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH=${HOME}/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -54,60 +51,3 @@ ZSH_THEME="bira"
 plugins=(git emacs sudo ssh ssh-agent)
 
 [ -f ${ZSH}/oh-my-zsh.sh ] && source ${ZSH}/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-    export EDITOR='te'
-else
-    export EDITOR='emacs'
-fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# Customs --------------------------------------------------------------
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# Display an env list variable with newline instead of ':'
-alias pretty_env_list="sed -e 's@^\([^=]*\)=@\o033[33;1m\1\o033[0m\n@' -e 's@:@\n@g'"
-
-# No share history
-setopt no_share_history
-
-# fzf
-if [ -f ~/.fzf.zsh ]; then
-    # Source install
-    source ~/.fzf.zsh
-else
-    # Installed through pkg manager
-    for file in /usr/share/doc/fzf/examples/key-bindings.zsh \
-                /usr/share/doc/fzf/examples/completion.zsh
-    do
-       [ -f ${file} ] && source ${file}
-    done
-fi
-
-if [ $(which fzf) ]; then
-    alias searchenv="printenv | fzf"
-    alias searchproc="ps -aux | fzf"
-else
-    echo "FZF not installed"
-fi

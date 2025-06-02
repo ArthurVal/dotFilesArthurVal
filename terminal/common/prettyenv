@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Given an env var list with the following format:
+# NAME_0=VALUE_0:VALUE_1
+# NAME_2=VALUE_0:VALUE_1:VALUE_2:...
+#
+# Transform it like this:
+# NAME_0
+# VALUE_0
+# VALUE_1
+# NAME_2
+# VALUE_0
+# VALUE_1
+# VALUE_2
+# ...
+# With each keys/names colored in yellow (ANSI 33;1)
+alias prettyenv="sed -e 's@^\([^=]*\)=@\o033[33;1m\1\o033[0m\n@' -e 's@:@\n@g'"
