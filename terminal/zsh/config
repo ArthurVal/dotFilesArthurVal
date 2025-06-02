@@ -68,7 +68,6 @@ fi
 setopt no_share_history
 
 # Source custom def/aliases specific to this terminal (bash)
-
 for file in "$(dirname ${CONFIG_FILE_PATH})/custom/"* ; do
     source "${file}"
 done
