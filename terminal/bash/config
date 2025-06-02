@@ -2,6 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+CONFIG_FILE_PATH="$(realpath ${BASH_SOURCE[0]})"
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -97,18 +99,18 @@ fi
 
 
 # Source custom def/aliases specific to this terminal (bash)
-SCRIPT_PATH="$(realpath ${BASH_SOURCE[0]})"
-for file in "$(dirname ${SCRIPT_PATH})/custom/"* ; do
+for file in "$(dirname ${CONFIG_FILE_PATH})/custom/"* ; do
     source "${file}"
 done
 
 # Source common def/aliases (independent of the terminal)
-for file in "$(dirname ${SCRIPT_PATH})/../common/"*; do
+for file in "$(dirname ${CONFIG_FILE_PATH})/../common/"*; do
     source "${file}"
 done
-unset SCRIPT_PATH
 
 # Generic aliases
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
+
+unset CONFIG_FILE_PATH

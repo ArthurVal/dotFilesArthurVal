@@ -1,10 +1,10 @@
 # If you come from bash you might have to change your $PATH
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-SCRIPT_PATH="$(realpath ${(%):-%x})"
+CONFIG_FILE_PATH="$(realpath ${(%):-%x})"
 
 if [ -d "${HOME}/.oh-my-zsh" ]; then
-    source "$(basename ${SCRIPT_PATH})/"omz
+    source "$(basename ${CONFIG_FILE_PATH})/"omz
 else
     echo "'oh-my-zsh' not installed -> default config"
 
@@ -69,12 +69,13 @@ setopt no_share_history
 
 # Source custom def/aliases specific to this terminal (bash)
 
-for file in "$(dirname ${SCRIPT_PATH})/custom/"* ; do
+for file in "$(dirname ${CONFIG_FILE_PATH})/custom/"* ; do
     source "${file}"
 done
 
 # Source common def/aliases (independent of the terminal)
-for file in "$(dirname ${SCRIPT_PATH})/../common/"*; do
+for file in "$(dirname ${CONFIG_FILE_PATH})/../common/"*; do
     source "${file}"
 done
-unset SCRIPT_PATH
+
+unset CONFIG_FILE_PATH
