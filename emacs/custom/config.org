@@ -611,6 +611,16 @@ Tree]] makes everything very smooth. A must have ...
 #+end_src
 
 * Development
+** Direnv
+
+[[https://github.com/wbolster/emacs-direnv][Direnv]] is an awesome tool to orgazine workspaces & co.
+
+#+begin_src emacs-lisp
+  (use-package direnv
+    :config
+    (direnv-mode))
+#+end_src
+
 ** Languages
 *** IDE - LSP
 **** lsp-mode
@@ -673,7 +683,7 @@ feel even more like an IDE. Check out the screenshots on the =lsp-ui= homepage
 symbols in a file, references of a symbol, or diagnostic messages (errors and
 warnings) that are found in your code.
 
-Try these commands with =M-x=:  
+Try these commands with =M-x=:
 - =lsp-treemacs-symbols= - Show a tree view of the symbols in the current file
 - =lsp-treemacs-references= - Show a tree view for the references of the symbol
   under the cursor
