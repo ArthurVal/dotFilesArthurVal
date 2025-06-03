@@ -1,6 +1,25 @@
 #!/usr/bin/env bash
 
-# Add usefull alias to pipe with fzf
+if [ -z "$1" ]; then
+    echo "Missing mandatory shell extension when sourcing this file"
+    exit 1
+fi
+
+if [ -z "$(which fzf)" ]; then
+    # Lookup for some custom default fzf install path
+    if [ -f ~/.fzf.${1} ]; then
+        # Source local install
+        source ~/.fzf.${1}
+    else
+        # Installed through pkg manager
+        for file in /usr/share/doc/fzf/examples/key-bindings.${1} \
+                    /usr/share/doc/fzf/examples/completion.${1}
+        do
+            [ -f ${file} ] && source ${file}
+        done
+    fi
+fi
+
 if [ -n "$(which fzf)" ]; then
     alias printenvf="printenv | fzf"
     alias psf="ps -aux | fzf"

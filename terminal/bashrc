@@ -98,14 +98,9 @@ if ! shopt -oq posix; then
 fi
 
 
-# Source custom def/aliases specific to this terminal (bash)
-for file in "$(dirname ${CONFIG_FILE_PATH})/custom/"* ; do
-    source "${file}"
-done
-
-# Source common def/aliases (independent of the terminal)
-for file in "$(dirname ${CONFIG_FILE_PATH})/../common/"*; do
-    source "${file}"
+# Source common def/aliases
+for file in "$(dirname ${CONFIG_FILE_PATH})/common/"*; do
+    source "${file}" bash
 done
 
 # Generic aliases
