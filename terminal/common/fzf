@@ -5,7 +5,8 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-if [ -z "$(which fzf)" ]; then
+if ! command -v fzf >/dev/null 2>&1
+then
     # Lookup for some custom default fzf install path
     if [ -f ~/.fzf.${1} ]; then
         # Source local install
@@ -20,7 +21,8 @@ if [ -z "$(which fzf)" ]; then
     fi
 fi
 
-if [ -n "$(which fzf)" ]; then
+if command -v fzf >/dev/null 2>&1
+then
     alias printenvf="printenv | fzf"
     alias psf="ps -aux | fzf"
 fi

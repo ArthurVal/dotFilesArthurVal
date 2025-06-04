@@ -5,7 +5,8 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-if [ -n "$(which direnv)" ]; then
+if command -v direnv >/dev/null 2>&1
+then
     case "${1}" in
         "bash" | "zsh")
             eval "$(direnv hook ${1})"

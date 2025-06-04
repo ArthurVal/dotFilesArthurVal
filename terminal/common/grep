@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-if [ -n "$(which dircolors)" ]; then
+if command -v dircolors >/dev/null 2>&1
+then
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
