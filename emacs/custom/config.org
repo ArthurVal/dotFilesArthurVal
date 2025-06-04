@@ -718,6 +718,7 @@ Try these commands with =M-x=:
   (use-package lsp-ivy
     :after lsp)
 #+end_src
+
 *** Python
 
 Use [[https://github.com/JorisE/yapfify][yapfify]] in order to format python buffers.
