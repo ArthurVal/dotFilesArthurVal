@@ -794,7 +794,7 @@ its commands directly.
     :config
         ;; NOTE: Set this to the folder where you keep your Git repos!
     (when (file-directory-p "~/Workspace")
-      (setq projectile-project-search-path '("~/Workspace")))
+      (add-to-list 'projectile-project-search-path '("~/Workspace" . 0)))
 
     (setq projectile-switch-project-action #'projectile-dired))
 
