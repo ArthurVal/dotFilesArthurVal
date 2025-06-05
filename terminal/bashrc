@@ -2,7 +2,7 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-CONFIG_FILE_PATH="$(realpath ${BASH_SOURCE[0]})"
+CONFIG_FILE_DIR="$(realpath ${BASH_SOURCE[0]} | xargs dirname)"
 
 # If not running interactively, don't do anything
 case $- in
@@ -95,8 +95,8 @@ fi
 
 
 # Source common def/aliases
-for file in "$(dirname ${CONFIG_FILE_PATH})/common/"*; do
-    source "${file}" bash
+for file in ${CONFIG_FILE_DIR}/common/*; do
+    source ${file} bash
 done
 
 # Generic aliases
@@ -104,4 +104,4 @@ if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
 
-unset CONFIG_FILE_PATH
+unset CONFIG_FILE_DIR

@@ -1,7 +1,7 @@
 # If you come from bash you might have to change your $PATH
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-CONFIG_FILE_PATH="$(realpath ${(%):-%x})"
+CONFIG_FILE_DIR="$(realpath ${(%):-%x} | xargs dirname)"
 
 if [ -d "${HOME}/.oh-my-zsh" ]; then
     # Path to your oh-my-zsh installation.
@@ -121,8 +121,8 @@ fi
 setopt no_share_history
 
 # Source common def/aliases
-for file in "$(dirname ${CONFIG_FILE_PATH})/common/"*; do
-    source "${file}" zsh
+for file in ${CONFIG_FILE_DIR}/common/*; do
+    source ${file} zsh
 done
 
-unset CONFIG_FILE_PATH
+unset CONFIG_FILE_DIR
