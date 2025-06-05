@@ -5,24 +5,22 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-if ! command -v fzf >/dev/null 2>&1
+if ! command -v fzf >/dev/null && [ -f ~/.fzf.${1} ]
 then
-    # Lookup for some custom default fzf install path
-    if [ -f ~/.fzf.${1} ]; then
-        # Source local install
-        source ~/.fzf.${1}
-    else
-        # Installed through pkg manager
-        for file in /usr/share/doc/fzf/examples/key-bindings.${1} \
-                    /usr/share/doc/fzf/examples/completion.${1}
-        do
-            [ -f ${file} ] && source ${file}
-        done
-    fi
+    # Source local install
+    source ~/.fzf.${1}
 fi
 
-if command -v fzf >/dev/null 2>&1
+if command -v fzf >/dev/null
 then
+    # When installed through pkg manager, key bindings needs to be added
+    # manually
+    for file in /usr/share/doc/fzf/examples/key-bindings.${1} \
+                /usr/share/doc/fzf/examples/completion.${1}
+    do
+        [ -f ${file} ] && source ${file}
+    done
+
     alias printenvf="printenv | fzf"
     alias psf="ps -aux | fzf"
 fi
