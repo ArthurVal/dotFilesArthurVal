@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if command -v dircolors >/dev/null 2>&1
+if command -v dircolors >/dev/null
 then
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
