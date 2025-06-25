@@ -833,8 +833,8 @@ easier to visually match parentheses in Emacs Lisp code without having to count
 them yourself.
 
 #+begin_src emacs-lisp
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
+  (use-package rainbow-delimiters
+    :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
 ** Multiple cursor
@@ -843,9 +843,9 @@ them yourself.
 at the same time.
 
 #+begin_src emacs-lisp
-(use-package multiple-cursors
-  :bind (("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)))
+  (use-package multiple-cursors
+    :bind (("C->" . mc/mark-next-like-this)
+           ("C-<" . mc/mark-previous-like-this)))
 #+end_src
 
 ** TODO Smartparens
@@ -886,22 +886,22 @@ The ivy yasnippet integration.
 Use of some default snippet define in MELPA for yasnippet.
 
 #+begin_src emacs-lisp
-(use-package yasnippet-snippets
-  :requires yasnippet)
+  (use-package yasnippet-snippets
+    :requires yasnippet)
 #+end_src
 
 **** Python
 
 #+begin_src emacs-lisp
-(use-package py-snippets
-  :requires yasnippet)
+  (use-package py-snippets
+    :requires yasnippet)
 #+end_src
 
 **** Gitignore
 
 #+begin_src emacs-lisp
-(use-package gitignore-snippets
-  :requires yasnippet)
+  (use-package gitignore-snippets
+    :requires yasnippet)
 #+end_src
 
 * Runtime Performance
