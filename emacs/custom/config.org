@@ -449,11 +449,6 @@ information about each item.
     (setq ivy-read-action-format-function 'ivy-read-action-format-columns)
     (ivy-mode 1))
 
-  (use-package ivy-rich
-    :after ivy
-    :init
-    (ivy-rich-mode 1))
-
   (use-package counsel
     :bind (("C-M-j" . 'counsel-switch-buffer)
            ("C-c i" . 'counsel-imenu)
@@ -463,6 +458,11 @@ information about each item.
     (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
     :config
     (counsel-mode 1))
+
+  (use-package ivy-rich
+    :after (ivy counsel)
+    :init
+    (ivy-rich-mode 1))
 #+end_src
 
 *** Improved Candidate Sorting with prescient.el
