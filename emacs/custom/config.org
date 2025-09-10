@@ -628,14 +628,11 @@ Tree]] makes everything very smooth. A must have ...
 
 ** Languages
 *** C
-
 Remove the `c-toggle-electric-state` keybinds that I keep accidently using over and over...
 
 #+begin_src emacs-lisp
-  (keymap-unset c-mode-base-map "C-c C-l" 'remove)
+  ;; (keymap-unset c-mode-base-map "C-c C-l" 'remove)
 #+end_src
-
-
 *** Python
 
 Use [[https://github.com/JorisE/yapfify][yapfify]] in order to format python buffers.
