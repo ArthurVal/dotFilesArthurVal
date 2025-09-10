@@ -627,6 +627,24 @@ Tree]] makes everything very smooth. A must have ...
 #+end_src
 
 ** Languages
+*** C
+
+Remove the `c-toggle-electric-state` keybinds that I keep accidently using over and over...
+
+#+begin_src emacs-lisp
+  (keymap-unset c-mode-base-map "C-c C-l" 'remove)
+#+end_src
+
+
+*** Python
+
+Use [[https://github.com/JorisE/yapfify][yapfify]] in order to format python buffers.
+
+#+begin_src emacs-lisp
+  (use-package yapfify
+    :hook (python-mode . yapf-mode))
+#+end_src
+
 *** IDE - LSP
 **** lsp-mode
 
@@ -721,15 +739,6 @@ Try these commands with =M-x=:
 #+begin_src emacs-lisp
   (use-package lsp-ivy
     :after lsp)
-#+end_src
-
-*** Python
-
-Use [[https://github.com/JorisE/yapfify][yapfify]] in order to format python buffers.
-
-#+begin_src emacs-lisp
-  (use-package yapfify
-    :hook (python-mode . yapf-mode))
 #+end_src
 
 ** Company Mode
