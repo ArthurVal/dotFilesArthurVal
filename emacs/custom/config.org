@@ -810,7 +810,8 @@ its commands directly.
     (when (file-directory-p "~/Workspace")
       (add-to-list 'projectile-project-search-path '("~/Workspace" . 0)))
 
-    (setq projectile-switch-project-action #'projectile-dired))
+    (setq projectile-switch-project-action #'projectile-dired)
+    (projectile-cleanup-known-projects))
 
   (use-package ibuffer-projectile
     :after (ibuffer projectile)
