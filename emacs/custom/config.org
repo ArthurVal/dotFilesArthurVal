@@ -248,6 +248,9 @@ line if you'd like to still see that.
       :config
       (setq display-line-numbers-type 'relative)
       (global-display-line-numbers-mode)))
+
+  (when (>= emacs-major-version 28.1)
+    (setq native-comp-async-report-warnings-errors 'silent))
 #+end_src
 
 * UI Configuration
