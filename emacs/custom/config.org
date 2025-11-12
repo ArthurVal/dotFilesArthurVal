@@ -4,7 +4,6 @@
 #+PROPERTY: :mkdirp yes
 #+STARTUP: overview
 * Startup Performance
-
 #+begin_src emacs-lisp
   (let ((file-name-handler-alist nil))
 
@@ -121,15 +120,15 @@ configuration of everything else we use.
                            t)))
 
   (package-initialize)
-  (unless package-archive-contents
-    (package-refresh-contents))
 
   ;; Initialize use-package on non-Linux platforms
   (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
     (package-install 'use-package))
 
-  (require 'use-package)
   (setq use-package-always-ensure t)
+  (setq use-package-verbose t)
+  (require 'use-package)
 #+end_src
 
 ** Automatic Package Updates
@@ -142,6 +141,7 @@ You can also use =M-x auto-package-update-now= to update right now!
 
 #+begin_src emacs-lisp
   (use-package auto-package-update
+    :ensure t
     :custom
     (auto-package-update-interval 14)
     (auto-package-delete-old-versions t)
@@ -230,7 +230,6 @@ line if you'd like to still see that.
 
   (when (>= emacs-major-version 26)
     (use-package display-line-numbers
-      :defer nil
       :ensure nil
       :config
       (setq display-line-numbers-type 'relative)
@@ -300,10 +299,14 @@ check out the [[https://github.com/seagle0128/doom-modeline#customize][configura
 
 #+begin_src emacs-lisp
   (use-package nerd-icons
-    :if (display-graphic-p))
+    :if (display-graphic-p)
+    :config
+    (nerd-icons-install-fonts))
 
   (use-package doom-modeline
-    :hook (after-init . doom-modeline-mode))
+    :ensure t
+    :init
+    (doom-modeline-mode 1))
 #+end_src
 
 ** Which Key
@@ -317,7 +320,6 @@ key bindings in the mode of your current buffer.
 
 #+begin_src emacs-lisp
   (use-package which-key
-    :defer 0
     :diminish which-key-mode
     :config
     (which-key-mode)
@@ -331,7 +333,6 @@ project management, git integration, etc..
 #+begin_src emacs-lisp
   (use-package treemacs
     :ensure t
-    :defer t
     :init
     (with-eval-after-load 'winum
       (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
@@ -427,7 +428,7 @@ information about each item.
 
 #+begin_src emacs-lisp
   (use-package ivy
-    :diminish
+    :demand t
     :bind (("C-s" . swiper)
            :map ivy-minibuffer-map
            ("TAB" . ivy-alt-done)
@@ -445,12 +446,8 @@ information about each item.
     (setq ivy-read-action-format-function 'ivy-read-action-format-columns)
     (ivy-mode 1))
 
-  (use-package ivy-rich
-    :after ivy counsel
-    :init
-    (ivy-rich-mode 1))
-
   (use-package counsel
+    :demand t
     :bind (("C-M-j" . 'counsel-switch-buffer)
            ("C-c i" . 'counsel-imenu)
            :map minibuffer-local-map
@@ -459,6 +456,11 @@ information about each item.
     (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
     :config
     (counsel-mode 1))
+
+  (use-package ivy-rich
+    :after (ivy counsel)
+    :init
+    (ivy-rich-mode 1))
 #+end_src
 
 *** Improved Candidate Sorting with prescient.el
