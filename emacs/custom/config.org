@@ -135,7 +135,7 @@ configuration of everything else we use.
             use-package-expand-minimally nil
             use-package-compute-statistics t
             debug-on-error t)
-    (setq use-package-verbose null
+    (setq use-package-verbose nil
           use-package-expand-minimally t))
 #+end_src
 
