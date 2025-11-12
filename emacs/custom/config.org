@@ -127,6 +127,8 @@ configuration of everything else we use.
     (package-refresh-contents)
     (package-install 'use-package))
 
+  (require 'use-package)
+
   ;; (setq use-package-always-ensure t)
   (if init-file-debug
       (setq use-package-verbose t
@@ -135,7 +137,6 @@ configuration of everything else we use.
             debug-on-error t)
     (setq use-package-verbose null
           use-package-expand-minimally t))
-  (require 'use-package)
 #+end_src
 
 ** Automatic Package Updates
