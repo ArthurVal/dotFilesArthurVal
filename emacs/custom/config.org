@@ -156,6 +156,8 @@ You can also use =M-x auto-package-update-now= to update right now!
   (use-package auto-package-update
     :custom
     (auto-package-update-interval 14)
+    (auto-package-delete-old-versions t)
+    ;; (auto-package-update-show-preview t)
     ;; (auto-package-update-prompt-before-update t)
     :config
     (auto-package-update-maybe))
