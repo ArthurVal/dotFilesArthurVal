@@ -126,8 +126,14 @@ configuration of everything else we use.
     (package-refresh-contents)
     (package-install 'use-package))
 
-  (setq use-package-always-ensure t)
-  (setq use-package-verbose t)
+  ;; (setq use-package-always-ensure t)
+  (if init-file-debug
+      (setq use-package-verbose t
+            use-package-expand-minimally nil
+            use-package-compute-statistics t
+            debug-on-error t)
+    (setq use-package-verbose null
+          use-package-expand-minimally t))
   (require 'use-package)
 #+end_src
 
