@@ -168,6 +168,7 @@ much easier than finding and setting these variables yourself.
 
 #+begin_src emacs-lisp
   (use-package no-littering
+    :ensure t
     :config
     (no-littering-theme-backups))
 
@@ -231,6 +232,7 @@ line if you'd like to still see that.
 
   ;; For some reason, some time, the compilation buffer show ansi escape code...
   (use-package ansi-color
+    :ensure t
     :init
     (defun my-apply-color-to-compilation ()
       (ansi-color-apply-on-region compilation-filter-start (point)))
@@ -238,7 +240,7 @@ line if you'd like to still see that.
 
   (when (>= emacs-major-version 26)
     (use-package display-line-numbers
-      :ensure nil
+      :ensure t
       :config
       (setq display-line-numbers-type 'relative)
       (global-display-line-numbers-mode)))
@@ -255,6 +257,7 @@ than 2 windows, `other-window` may start to become tidious...)
 
 #+begin_src emacs-lisp
   (use-package ace-window
+    :ensure t
     :bind ("C-x o" . ace-window))
 #+end_src
 
@@ -264,6 +267,7 @@ like being able to find my way easily.
 
 #+begin_src emacs-lisp
   (use-package ibuffer
+    :ensure t
     :bind ("C-x C-b" . ibuffer))
 #+end_src
 
@@ -291,7 +295,7 @@ between them easily.
 
 #+begin_src emacs-lisp
   (use-package doom-themes
-    :ensure
+    :ensure t
     :config
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
@@ -307,6 +311,7 @@ check out the [[https://github.com/seagle0128/doom-modeline#customize][configura
 
 #+begin_src emacs-lisp
   (use-package nerd-icons
+    :ensure t
     :if (display-graphic-p)
     :config
     (nerd-icons-install-fonts))
@@ -328,6 +333,7 @@ key bindings in the mode of your current buffer.
 
 #+begin_src emacs-lisp
   (use-package which-key
+    :ensure t
     :diminish which-key-mode
     :config
     (which-key-mode)
@@ -415,12 +421,10 @@ project management, git integration, etc..
           ("C-c t M-t" . treemacs-find-tag)))
 
   (use-package treemacs-projectile
-    :after (treemacs projectile)
-    :ensure t)
+    :after (treemacs projectile))
 
   (use-package treemacs-magit
-    :after (treemacs magit)
-    :ensure t)
+    :after (treemacs magit))
 #+end_src
 
 ** Ivy and Counsel
@@ -436,7 +440,7 @@ information about each item.
 
 #+begin_src emacs-lisp
   (use-package ivy
-    :demand t
+    :ensure t
     :bind (("C-s" . swiper)
            :map ivy-minibuffer-map
            ("TAB" . ivy-alt-done)
@@ -455,7 +459,7 @@ information about each item.
     (ivy-mode 1))
 
   (use-package counsel
-    :demand t
+    :ensure t
     :bind (("C-M-j" . 'counsel-switch-buffer)
            ("C-c i" . 'counsel-imenu)
            :map minibuffer-local-map
@@ -466,6 +470,7 @@ information about each item.
     (counsel-mode 1))
 
   (use-package ivy-rich
+    :ensure t
     :after (ivy counsel)
     :init
     (ivy-rich-mode 1))
@@ -480,6 +485,7 @@ a key but still need to access occasionally.
 
 #+begin_src emacs-lisp
   (use-package ivy-prescient
+    :ensure t
     :after (ivy counsel)
     :custom
     (ivy-prescient-enable-filtering nil)
@@ -528,6 +534,7 @@ Tree]] makes everything very smooth. A must have ...
 
 #+begin_src emacs-lisp
   (use-package whitespace
+    :ensure t
     :hook (prog-mode . whitespace-mode)
     :init
     (setq whitespace-style '(face trailing lines-tail empty)))
@@ -540,6 +547,7 @@ Tree]] makes everything very smooth. A must have ...
 ** Config
 #+begin_src emacs-lisp
   (use-package org
+    :ensure t
     :bind (("C-c c" . org-capture)
            ("C-c a" . org-agenda))
     :custom
@@ -612,8 +620,12 @@ Tree]] makes everything very smooth. A must have ...
 #+end_src
 ** Org Exports
 #+begin_src emacs-lisp
-  (use-package ox-jira :after org)
-  (use-package ox-gfm :after org)
+  (use-package ox-jira
+    :ensure t
+    :after org)
+  (use-package ox-gfm
+    :ensure t
+    :after org)
 #+end_src
 
 * Dev
@@ -624,6 +636,7 @@ Tree]] makes everything very smooth. A must have ...
 
 #+begin_src emacs-lisp
   (use-package direnv
+    :ensure t
     :config
     (direnv-mode))
 #+end_src
@@ -641,6 +654,7 @@ icons and better overall presentation.
 
 #+begin_src emacs-lisp
   (use-package company
+    :ensure t
     :after lsp-mode
     :hook (lsp-mode . company-mode)
     :bind (:map company-active-map
@@ -667,6 +681,7 @@ icons and better overall presentation.
      (company-backends '(company-capf)))
 
   (use-package company-box
+    :ensure t
     :hook (company-mode . company-box-mode))
 #+end_src
 
@@ -680,7 +695,6 @@ its commands directly.
 #+begin_src emacs-lisp
   (use-package projectile
     :ensure t
-    :defer t
     :diminish projectile-mode
     :custom
     ((projectile-completion-system 'ivy))
@@ -702,6 +716,7 @@ its commands directly.
     (projectile-cleanup-known-projects))
 
   (use-package ibuffer-projectile
+    :ensure t
     :after (ibuffer projectile)
     :preface
     (defun my/ibuffer-projectile ()
@@ -712,6 +727,7 @@ its commands directly.
     (ibuffer . my/ibuffer-projectile))
 
   (use-package counsel-projectile
+    :ensure t
     :after (projectile counsel)
     :config (counsel-projectile-mode))
 #+end_src
@@ -723,6 +739,7 @@ to execute quickly using Magit's command panel system.
 
 #+begin_src emacs-lisp
   (use-package magit
+    :ensure t
     :commands magit-status
     :bind (("C-x g" . magit-status)))
 #+end_src
@@ -736,7 +753,7 @@ them yourself.
 
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
-    :ensure
+    :ensure t
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
@@ -747,6 +764,7 @@ at the same time.
 
 #+begin_src emacs-lisp
   (use-package multiple-cursors
+    :ensure t
     :bind (("C->" . mc/mark-next-like-this)
            ("C-<" . mc/mark-previous-like-this)))
 #+end_src
@@ -759,6 +777,7 @@ at the same time.
 
 #+begin_src emacs-lisp
   (use-package yasnippet
+    :ensure t
     :config
     (with-eval-after-load 'which-key
       (which-key-add-keymap-based-replacements
@@ -778,6 +797,7 @@ The ivy yasnippet integration.
 
 #+begin_src emacs-lisp
   (use-package ivy-yasnippet
+    :ensure t
     :after (ivy yasnippet)
     :bind
     ("C-c y s" . ivy-yasnippet))
@@ -790,6 +810,7 @@ Use of some default snippet define in MELPA for yasnippet.
 
 #+begin_src emacs-lisp
   (use-package yasnippet-snippets
+    :ensure t
     :requires yasnippet)
 #+end_src
 
@@ -797,6 +818,7 @@ Use of some default snippet define in MELPA for yasnippet.
 
 #+begin_src emacs-lisp
   (use-package py-snippets
+    :ensure t
     :requires yasnippet)
 #+end_src
 
@@ -804,6 +826,7 @@ Use of some default snippet define in MELPA for yasnippet.
 
 #+begin_src emacs-lisp
   (use-package gitignore-snippets
+    :ensure t
     :requires yasnippet)
 #+end_src
 
@@ -830,6 +853,7 @@ and trying different things that you find there.
     (lsp-headerline-breadcrumb-mode))
 
   (use-package lsp-mode
+    :ensure t
     :commands (lsp lsp-deferred)
     :hook ((lsp-mode . efs/lsp-mode-setup)
            ((c-mode-common python-mode) . lsp-deferred))
@@ -855,6 +879,7 @@ feel even more like an IDE. Check out the screenshots on the =lsp-ui= homepage
 
 #+begin_src emacs-lisp
   (use-package lsp-ui
+    :ensure t
     :after lsp-mode
     :hook (lsp-mode . lsp-ui-mode)
     :custom
@@ -880,6 +905,7 @@ editor.
 
 #+begin_src emacs-lisp
   (use-package lsp-treemacs
+    :ensure t
     :after lsp)
 #+end_src
 
@@ -900,6 +926,7 @@ Try these commands with =M-x=:
 
 #+begin_src emacs-lisp
   (use-package lsp-ivy
+    :ensure t
     :after lsp)
 #+end_src
 
@@ -916,6 +943,7 @@ Use [[https://github.com/JorisE/yapfify][yapfify]] in order to format python buf
 
 #+begin_src emacs-lisp
   (use-package yapfify
+    :ensure t
     :hook (python-mode . yapf-mode))
 #+end_src
 
