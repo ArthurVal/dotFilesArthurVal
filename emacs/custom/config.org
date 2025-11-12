@@ -3,18 +3,6 @@
 #+EMAIL: valiente.arthur@gmail.com
 #+PROPERTY: :mkdirp yes
 #+STARTUP: overview
-* TODO
-** Keybinds [1/1]
-*** DONE Add magit status keybinds
-** Fixes [0/2]
-*** TODO Fix counsel projectile files (ignore .svn/.git)
-*** TODO Fix Org mode config
-** Features [3/5]
-*** TODO Add buffer switch cursor stuff
-*** DONE C/C++ LSP mode stuff
-*** DONE Python LSP mode stuff
-*** TODO Smartparens
-*** DONE Snippets
 * Startup Performance
 
 #+begin_src emacs-lisp
