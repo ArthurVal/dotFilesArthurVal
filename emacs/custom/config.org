@@ -347,7 +347,8 @@ project management, git integration, etc..
     :init
     (with-eval-after-load 'winum
       (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-    (which-key-add-keymap-based-replacements global-map "C-c t" '("treemacs"))
+    (with-eval-after-load 'which-key
+      (which-key-add-keymap-based-replacements global-map "C-c t" '("treemacs")))
     :config
     (progn
       (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
@@ -691,8 +692,9 @@ its commands directly.
     ("C-c p" . projectile-command-map)
     :init
     ;; Which key naming
-    (which-key-add-keymap-based-replacements global-map
-      "C-c p" '("projectile"))
+    (with-eval-after-load 'which-key
+      (which-key-add-keymap-based-replacements global-map
+        "C-c p" '("projectile")))
     :config
         ;; NOTE: Set this to the folder where you keep your Git repos!
     (when (file-directory-p "~/Workspace")
@@ -760,9 +762,9 @@ at the same time.
 #+begin_src emacs-lisp
   (use-package yasnippet
     :config
-    (which-key-add-keymap-based-replacements
-      yas-minor-mode-map "C-c y" '("yasnippet"))
-
+    (with-eval-after-load 'which-key
+      (which-key-add-keymap-based-replacements
+        yas-minor-mode-map "C-c y" '("yasnippet")))
     ;; yas-snippet-dirs should point to custom snippet dir location
     ;; NOTE: yas-snippet-dirs is taken into account when:
     ;;  - activating "yas-global-mode"
