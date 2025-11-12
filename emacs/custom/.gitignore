@@ -1,6 +1,5 @@
 # This is used to ignore files created by emacs when using this directory as
 # .emacs.d through a symlink
-e
 *
 !.gitignore
 !init.el
