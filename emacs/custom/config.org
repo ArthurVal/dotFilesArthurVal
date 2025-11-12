@@ -621,7 +621,7 @@ Tree]] makes everything very smooth. A must have ...
   (use-package ox-gfm :after org)
 #+end_src
 
-* Development
+* Dev
 ** Direnv
 
 [[https://github.com/wbolster/emacs-direnv][Direnv]] is an awesome tool to orgazine workspaces & co.
