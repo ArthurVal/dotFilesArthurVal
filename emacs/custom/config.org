@@ -218,6 +218,7 @@ line if you'd like to still see that.
   (tooltip-mode -1)           ; Disable tooltips
   (set-fringe-mode 10)        ; Give some breathing room
   (menu-bar-mode -1)          ; Disable the menu bar
+  (electric-indent-mode -1)   ; Disable electric
 
   ;; Disable line numbers for some modes
   (dolist (mode '(org-mode-hook
