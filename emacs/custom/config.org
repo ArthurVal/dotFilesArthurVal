@@ -618,7 +618,8 @@ Tree]] makes everything very smooth. A must have ...
 #+end_src
 
 * Dev
-** Direnv
+** Tools
+*** Direnv
 
 [[https://github.com/wbolster/emacs-direnv][Direnv]] is an awesome tool to orgazine workspaces & co.
 
@@ -628,7 +629,7 @@ Tree]] makes everything very smooth. A must have ...
     (direnv-mode))
 #+end_src
 
-** Company Mode
+*** Company Mode
 
 [[http://company-mode.github.io/][Company Mode]] provides a nicer in-buffer completion interface than
 =completion-at-point= which is more reminiscent of what you would expect from an
@@ -670,7 +671,7 @@ icons and better overall presentation.
     :hook (company-mode . company-box-mode))
 #+end_src
 
-** Projectile
+*** Projectile
 
 [[https://projectile.mx/][Projectile]] is a project management library for Emacs which makes it a lot easier
 to navigate around code projects for various languages. Many packages integrate
@@ -715,7 +716,7 @@ its commands directly.
     :config (counsel-projectile-mode))
 #+end_src
 
-** Magit
+*** Magit
 
 [[https://magit.vc/][Magit]] is the best Git interface I've ever used. Common Git operations are easy
 to execute quickly using Magit's command panel system.
@@ -726,7 +727,7 @@ to execute quickly using Magit's command panel system.
     :bind (("C-x g" . magit-status)))
 #+end_src
 
-** Rainbow Delimiters
+*** Rainbow Delimiters
 
 [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]] is useful in programming modes because it colorizes nested
 parentheses and brackets according to their nesting depth. This makes it a lot
@@ -739,7 +740,7 @@ them yourself.
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-** Multiple cursor
+*** Multiple cursor
 
 [[https://github.com/magnars/multiple-cursors.el][multiple-cursor]] is can be very powerfull when in needs to edit multiples lines
 at the same time.
@@ -750,9 +751,9 @@ at the same time.
            ("C-<" . mc/mark-previous-like-this)))
 #+end_src
 
-** TODO Smartparens
+*** TODO Smartparens
 [[https://github.com/Fuco1/smartparens][smartparens]]
-** YASnippets
+*** YASnippets
 
 [[https://github.com/joaotavora/yasnippet][yasnippet]] is a template system for emacs and given you access to snippet creation and so on...
 
@@ -771,7 +772,7 @@ at the same time.
     (yas-global-mode t))
 #+end_src
 
-*** Ivy
+**** Ivy
 
 The ivy yasnippet integration.
 
@@ -782,8 +783,8 @@ The ivy yasnippet integration.
     ("C-c y s" . ivy-yasnippet))
 #+end_src
 
-*** Snippets
-**** Default
+**** Snippets
+***** Default
 
 Use of some default snippet define in MELPA for yasnippet.
 
@@ -792,34 +793,18 @@ Use of some default snippet define in MELPA for yasnippet.
     :requires yasnippet)
 #+end_src
 
-**** Python
+***** Python
 
 #+begin_src emacs-lisp
   (use-package py-snippets
     :requires yasnippet)
 #+end_src
 
-**** Gitignore
+***** Gitignore
 
 #+begin_src emacs-lisp
   (use-package gitignore-snippets
     :requires yasnippet)
-#+end_src
-
-** Languages
-*** C
-Remove the `c-toggle-electric-state` keybinds that I keep accidently using over and over...
-
-#+begin_src emacs-lisp
-  ;; (keymap-unset c-mode-base-map "C-c C-l" 'remove)
-#+end_src
-*** Python
-
-Use [[https://github.com/JorisE/yapfify][yapfify]] in order to format python buffers.
-
-#+begin_src emacs-lisp
-  (use-package yapfify
-    :hook (python-mode . yapf-mode))
 #+end_src
 
 *** IDE - LSP
@@ -916,6 +901,22 @@ Try these commands with =M-x=:
 #+begin_src emacs-lisp
   (use-package lsp-ivy
     :after lsp)
+#+end_src
+
+** Languages
+*** C
+Remove the `c-toggle-electric-state` keybinds that I keep accidently using over and over...
+
+#+begin_src emacs-lisp
+  ;; (keymap-unset c-mode-base-map "C-c C-l" 'remove)
+#+end_src
+*** Python
+
+Use [[https://github.com/JorisE/yapfify][yapfify]] in order to format python buffers.
+
+#+begin_src emacs-lisp
+  (use-package yapfify
+    :hook (python-mode . yapf-mode))
 #+end_src
 
 * Runtime Performance
