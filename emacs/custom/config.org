@@ -314,7 +314,8 @@ check out the [[https://github.com/seagle0128/doom-modeline#customize][configura
     :ensure t
     :if (display-graphic-p)
     :config
-    (nerd-icons-install-fonts))
+    ;; (nerd-icons-install-fonts)
+    )
 
   (use-package doom-modeline
     :ensure t
