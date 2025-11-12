@@ -240,10 +240,6 @@ line if you'd like to still see that.
       (ansi-color-apply-on-region compilation-filter-start (point)))
     :hook (compilation-filter . my-apply-color-to-compilation))
 
-  (use-package smooth-scrolling
-    :config
-    (smooth-scrolling-mode 1))
-
   (when (>= emacs-major-version 26)
     (use-package display-line-numbers
       :defer nil
