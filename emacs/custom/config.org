@@ -948,7 +948,8 @@ Use [[https://github.com/JorisE/yapfify][yapfify]] in order to format python buf
 #+begin_src emacs-lisp
   (use-package yapfify
     :ensure t
-    :hook (python-mode . yapf-mode))
+    ;; :hook (python-mode . yapf-mode)
+    )
 #+end_src
 
 * Runtime Performance
