@@ -18,7 +18,6 @@
                gcs-done))
 
     (add-hook 'emacs-startup-hook #'efs/display-startup-time)
-
 #+end_src
 
 * Customized variables
@@ -121,6 +120,12 @@ configuration of everything else we use.
           t)))
 
   (package-initialize)
+
+  (when init-file-debug
+    (setq use-package-verbose t
+          use-package-expand-minimally nil
+          use-package-compute-statistics t
+          debug-on-error t))
 
   ;; Initialize use-package on non-Linux platforms
   (unless (package-installed-p 'use-package)
