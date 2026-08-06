@@ -708,10 +708,13 @@ its commands directly.
     :custom
     ((projectile-completion-system 'ivy))
     :hook
-    (after-init . projectile-global-mode)
+    (after-init . projectile-mode)
     :bind-keymap
     ("C-c p" . projectile-command-map)
     :init
+    ;; FIX:
+    (defalias 'projectile-global-mode 'projectile-mode)
+
     ;; Which key naming
     (with-eval-after-load 'which-key
       (which-key-add-keymap-based-replacements global-map
@@ -737,7 +740,7 @@ its commands directly.
 
   (use-package counsel-projectile
     :ensure t
-    :after (projectile counsel)
+    :after (counsel projectile)
     :config (counsel-projectile-mode))
 #+end_src
 
