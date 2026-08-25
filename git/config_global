@@ -26,6 +26,8 @@
   excludesfile = ~/.gitignore_global
   # Don't consider trailing space change as a cause for merge conflicts
   whitespace = -trailing-space
+  # When using windows, enfore the CRLF automatically
+  # autocrlf = true
 [diff]
   # Use better, descriptive initials (c, i, w) instead of a/b.
   mnemonicPrefix = true

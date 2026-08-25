@@ -463,6 +463,13 @@ information about each item.
            ("C-p" . ivy-previous-line)
            ("C-d" . ivy-reverse-i-search-kill))
     :config
+
+    ;; Add recently visited files to switch buffer
+    (setq ivy-use-virtual-buffers t)
+
+    ;; Format for displaying candidate count
+    (setq ivy-count-format "(%d/%d) ")
+
     (setq ivy-read-action-format-function 'ivy-read-action-format-columns)
     (ivy-mode 1))
 
@@ -632,6 +639,7 @@ Tree]] makes everything very smooth. A must have ...
   (use-package ox-jira
     :ensure t
     :after org)
+
   (use-package ox-gfm
     :ensure t
     :after org)
@@ -741,7 +749,15 @@ its commands directly.
   (use-package counsel-projectile
     :ensure t
     :after (counsel projectile)
-    :config (counsel-projectile-mode))
+    :config
+
+    ;; Work around https://github.com/ericdanan/counsel-projectile/issues/193
+    (unless (functionp 'projectile-ignored-files-rel)
+      (defun projectile-ignored-files-rel () (list)))
+    (unless (functionp 'projectile-ignored-directories-rel)
+      (defun projectile-ignored-directories-rel () (list)))
+
+    (counsel-projectile-mode))
 #+end_src
 
 *** Magit
