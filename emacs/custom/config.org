@@ -553,7 +553,7 @@ Tree]] makes everything very smooth. A must have ...
     :ensure t
     :hook (prog-mode . whitespace-mode)
     :init
-    (setq whitespace-style '(face trailing lines-tail empty)))
+    (setq whitespace-style '(face trailing tabs lines-tail empty)))
 #+end_src
 * Org Mode
 ** Custom functions
