@@ -751,6 +751,9 @@ its commands directly.
     :after (counsel projectile)
     :config
 
+    ;; Default switch action to dired
+    (setcar counsel-projectile-switch-project-action 4)
+
     ;; Work around https://github.com/ericdanan/counsel-projectile/issues/193
     (unless (functionp 'projectile-ignored-files-rel)
       (defun projectile-ignored-files-rel () (list)))
