@@ -80,7 +80,7 @@ configuration of everything else we use.
      'file-directory-p
      (mapcar (lambda (x)
                (expand-file-name x dir-path))
-             (directory-files dir-path nil "^[^\.]" t))))
+             (directory-files dir-path nil "^[^\\.]" t))))
 
   (defun av-alist-all-dir-from (dir-list &optional key-prefix stop-first-dir)
     (let (output-alist single-dir sub-dir-list)
