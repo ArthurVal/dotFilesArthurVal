@@ -969,7 +969,18 @@ Try these commands with =M-x=:
 #+end_src
 
 ** Languages
+*** CMake
+
+Add cmake-mode.
+
+#+begin_src emacs-lisp
+  (use-package cmake-mode
+    :ensure t
+    :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+#+end_src
+
 *** C
+
 Remove the `c-toggle-electric-state` keybinds that I keep accidently using over and over...
 
 #+begin_src emacs-lisp
