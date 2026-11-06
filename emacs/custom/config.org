@@ -105,7 +105,7 @@ configuration of everything else we use.
                     output-alist))
             (when stop-first-dir
               (setq dir-list nil)))))
-      (eval 'output-alist)))
+      output-alist))
 
 
   (setq package-archives
