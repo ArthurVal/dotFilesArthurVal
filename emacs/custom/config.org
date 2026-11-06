@@ -570,9 +570,9 @@ Tree]] makes everything very smooth. A must have ...
            ("C-c a" . org-agenda))
     :custom
     ;; Some default directories/files
-    (org-directory (file-name-concat (getenv "HOME") "Documents" "Org"))
-    (org-default-notes-file (file-name-concat org-directory "refile.org"))
-    (org-agenda-files (list org-directory))
+    (org-directory (expand-file-name "Documents/Org" "~/"))
+    (org-default-notes-file (expand-file-name "refile.org" org-directory))
+    (org-agenda-files (directory-files-recursively "~/Documents/Org" "\\.org$"))
 
     ;; TODO keywords
     (org-todo-keywords
@@ -595,7 +595,7 @@ Tree]] makes everything very smooth. A must have ...
      '(("CANCELLED" ("CANCELLED" . t))
        ("WAITING" ("WAITING" . t))
        ("INACTIVE" ("WAITING") ("INACTIVE" . t))
-       (done ("WAITING") ("INACTIVE"))
+       ("DONE" ("WAITING") ("INACTIVE"))
        ("TODO" ("WAITING") ("CANCELLED") ("INACTIVE"))
        ("NEXT" ("WAITING") ("CANCELLED") ("INACTIVE"))
        ("DONE" ("WAITING") ("CANCELLED") ("INACTIVE"))))
@@ -611,30 +611,33 @@ Tree]] makes everything very smooth. A must have ...
        ("m" "Meeting" entry (file org-default-notes-file)
         "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)))
 
-     ;; Refile
-     (org-refile-targets '((nil :maxlevel . 9)
-                           (org-agenda-files :maxlevel . 9)))
+    ;; Refile
+    (org-refile-targets '((nil :maxlevel . 9)
+                          (org-agenda-files :maxlevel . 9)))
 
-     ;; -- Set the refile target selection
-     (org-refile-use-outline-path 'file)
-     (org-outline-path-complete-in-steps nil)
-     (org-refile-allow-creating-parent-nodes 'confirm)
+    ;; -- Set the refile target selection
+    (org-refile-use-outline-path 'file)
+    (org-outline-path-complete-in-steps nil)
+    (org-refile-allow-creating-parent-nodes 'confirm)
 
-     ;; Agenda
-     ;; -- Settings
-     (org-agenda-inhibit-startup nil)
-     (org-agenda-sticky t)
-     ;; -- Custom commands
-     ;; Reminder on expected fmt:
-     ;; - single filter    = (key desc type match settings files)
-     ;; - multiple filters = (key desc (cmd1 cmd2 ...) general_settings)
-     (org-agenda-custom-commands
-      '(("x" . "Agenda and ...")
-        ("xa" "All" ((tags "PRIORITY=\"A\""
-                           ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                            (org-agenda-overriding-header "High-priority:")))
-                     (agenda "")
-                     (alltodo ""))))))
+    ;; Agenda
+    ;; -- Settings
+    (org-agenda-inhibit-startup nil)
+    (org-agenda-sticky t)
+    ;; -- Custom commands
+    ;; Reminder on expected fmt:
+    ;; - single filter    = (key desc type match settings files)
+    ;; - multiple filters = (key desc (cmd1 cmd2 ...) general_settings)
+    (org-agenda-custom-commands
+     '(("x" . "Agenda and ...")
+       ("xa" "All" ((tags "PRIORITY=\"A\""
+                          ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                           (org-agenda-overriding-header "High-priority:")))
+                    (agenda "")
+                    (alltodo "")))
+       ("xm" "Month Agenda"
+        ((agenda ""))
+        ((org-agenda-span 'month))))))
 #+end_src
 ** Org Exports
 #+begin_src emacs-lisp
