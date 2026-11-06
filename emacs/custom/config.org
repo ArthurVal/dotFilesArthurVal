@@ -724,6 +724,8 @@ its commands directly.
     (after-init . projectile-mode)
     :bind-keymap
     ("C-c p" . projectile-command-map)
+    :bind (:map projectile-command-map
+                ("C-S-f" . projectile-find-file-all))
     :init
     ;; FIX:
     (defalias 'projectile-global-mode 'projectile-mode)
