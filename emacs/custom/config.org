@@ -595,7 +595,6 @@ Tree]] makes everything very smooth. A must have ...
      '(("CANCELLED" ("CANCELLED" . t))
        ("WAITING" ("WAITING" . t))
        ("INACTIVE" ("WAITING") ("INACTIVE" . t))
-       ("DONE" ("WAITING") ("INACTIVE"))
        ("TODO" ("WAITING") ("CANCELLED") ("INACTIVE"))
        ("NEXT" ("WAITING") ("CANCELLED") ("INACTIVE"))
        ("DONE" ("WAITING") ("CANCELLED") ("INACTIVE"))))
