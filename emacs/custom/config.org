@@ -3,21 +3,23 @@
 #+EMAIL: valiente.arthur@gmail.com
 #+PROPERTY: :mkdirp yes
 #+STARTUP: overview
+
 * Startup Performance
+
 #+begin_src emacs-lisp
-  (let ((file-name-handler-alist nil))
+  ;; The default is 800 kilobytes.  Measured in bytes.
+  (setq gc-cons-threshold most-positive-fixnum)
+  (defvar av-file-name-handler-alist-orig file-name-handler-alist)
+  (setq file-name-handler-alist nil)
 
-    ;; The default is 800 kilobytes.  Measured in bytes.
-    (setq gc-cons-threshold most-positive-fixnum)
+  (defun efs/display-startup-time ()
+    (message "Emacs loaded in %s with %d garbage collections."
+             (format "%.2f seconds"
+                     (float-time
+                      (time-subtract after-init-time before-init-time)))
+             gcs-done))
 
-    (defun efs/display-startup-time ()
-      (message "Emacs loaded in %s with %d garbage collections."
-               (format "%.2f seconds"
-                       (float-time
-                        (time-subtract after-init-time before-init-time)))
-               gcs-done))
-
-    (add-hook 'emacs-startup-hook #'efs/display-startup-time)
+  (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 #+end_src
 
 * Customized variables
@@ -979,13 +981,14 @@ Use [[https://github.com/JorisE/yapfify][yapfify]] in order to format python buf
     )
 #+end_src
 
-* Runtime Performance
+* Restore Performances
 
-Dial the GC threshold back down so that garbage collection happens more
-frequently but in less time.
+Restores things changes at the beginning of the config
 
 #+begin_src emacs-lisp
-    ;; Make gc pauses faster by decreasing the threshold.
-    (setq gc-cons-threshold (* 2 1000 1000))
-  )
+  ;; Make gc pauses faster by decreasing the threshold.
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (setq gc-cons-threshold (* 2 1000 1000))
+              (setq file-name-handler-alist av-file-name-handler-alist-orig)))
 #+end_src
